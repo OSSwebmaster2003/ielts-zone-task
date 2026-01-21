@@ -3,7 +3,6 @@ import Sidebar from '@/components/common/Sidebar.vue'
 import Header from '@/components/common/Header.vue'
 import CalendarWidget from '@/components/pages/overview/CalendarWidget.vue'
 import TaskToday from '@/components/pages/overview/TaskToday.vue'
-import DetailTask from '@/components/pages/overview/DetailTask.vue'
 </script>
 
 <template>
@@ -21,7 +20,6 @@ import DetailTask from '@/components/pages/overview/DetailTask.vue'
       <div class="space-y-6">
         <CalendarWidget />
         <TaskToday />
-        <DetailTask />
       </div>
     </aside>
   </div>
@@ -56,7 +54,7 @@ import DetailTask from '@/components/pages/overview/DetailTask.vue'
 }
 
 .dashboard-layout__sidebar-right {
-  width: 320px;
+  width: 410px;
   background: #F5F5F7;
   overflow-y: auto;
   height: 100vh;
