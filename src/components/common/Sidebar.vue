@@ -5,7 +5,7 @@
   ]">
     <!-- Close Button (Mobile Only) -->
     <button @click="closeSidebar"
-      class="sidebar__close-btn md:hidden absolute top-8 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-[#F5F5F7] hover:bg-gray-50 transition-all cursor-pointer z-10">
+      class="sidebar__close-btn md:hidden absolute top-7 right-6 w-10 h-10 flex items-center justify-center rounded-full border border-[#F5F5F7] hover:bg-gray-50 transition-all cursor-pointer z-10">
       <X :size="20" class="text-[#8E92BC]" />
     </button>
 
