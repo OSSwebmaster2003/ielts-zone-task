@@ -34,7 +34,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'TaskDetail',
-        component: () => import('../pages/tasks/TaskDetailPage.vue')
+        component: () => import('../pages/task-details/TaskDetailPage.vue')
       }
     ]
   },

@@ -53,6 +53,11 @@ interface Task {
   daysLeft: string
   image: string
   teamAvatars: string[]
+  videoUrl?: string
+  categories?: string
+  studentsCount?: number
+  description?: string
+  assessmentPoints?: string[]
 }
 
 const router = useRouter()
@@ -69,6 +74,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=11",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=12",
+    ],
+    videoUrl: "https://example.com/video1.mp4",
+    categories: "UI UX Design . Apps Design",
+    studentsCount: 200,
+    description: "Follow the video tutorial above. Understand how to use each tool in the Figma application. Also learn how to make a good and correct design. Starting from spacing, typography, content, and many other design hierarchies. Then try to make it yourself with your imagination and inspiration.",
+    assessmentPoints: [
+      "Understanding the tools in Figma",
+      "Understand the basics of making designs",
+      "Designing a mobile application using figma",
+      "Presenting the design flow"
     ]
   },
   {
@@ -82,6 +97,16 @@ const defaultTasks: Task[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=16",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=17",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=18",
+    ],
+    videoUrl: "https://example.com/video2.mp4",
+    categories: "Web Developer . Frontend Development",
+    studentsCount: 150,
+    description: "Learn how to build modern, responsive websites from scratch. This course covers HTML, CSS, JavaScript fundamentals, and best practices for creating beautiful and functional web applications.",
+    assessmentPoints: [
+      "Understanding HTML structure and semantics",
+      "Mastering CSS styling and layouts",
+      "Implementing JavaScript interactivity",
+      "Building responsive web designs"
     ]
   },
   {
@@ -95,6 +120,16 @@ const defaultTasks: Task[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=21",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=22",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=23",
+    ],
+    videoUrl: "https://example.com/video3.mp4",
+    categories: "UI UX Design . Color Theory",
+    studentsCount: 180,
+    description: "Discover the art and science of color in design. Learn how to create harmonious color palettes, understand color psychology, and apply color theory to your design projects effectively.",
+    assessmentPoints: [
+      "Understanding color theory fundamentals",
+      "Creating harmonious color palettes",
+      "Applying color psychology in design",
+      "Using color tools and resources"
     ]
   },
   {
@@ -107,6 +142,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=26",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=27",
+    ],
+    videoUrl: "https://example.com/video4.mp4",
+    categories: "Web Dev . Business Development",
+    studentsCount: 120,
+    description: "Learn how to develop effective business strategies for web projects. This course covers market analysis, user research, competitive analysis, and strategic planning for digital products.",
+    assessmentPoints: [
+      "Conducting market research",
+      "Analyzing competitors",
+      "Creating business models",
+      "Developing strategic plans"
     ]
   },
   {
@@ -119,6 +164,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=31",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=32",
+    ],
+    videoUrl: "https://example.com/video5.mp4",
+    categories: "UI UX Design . Interface Design",
+    studentsCount: 220,
+    description: "Master the principles of user interface design. Learn how to create intuitive, accessible, and visually appealing interfaces that enhance user experience and drive engagement.",
+    assessmentPoints: [
+      "Understanding UI design principles",
+      "Creating wireframes and mockups",
+      "Designing for accessibility",
+      "Prototyping interfaces"
     ]
   },
   {
@@ -131,6 +186,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=36",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=37",
+    ],
+    videoUrl: "https://example.com/video6.mp4",
+    categories: "Web Developer . E-commerce",
+    studentsCount: 190,
+    description: "Build a complete e-commerce platform from scratch. Learn about shopping carts, payment integration, product management, inventory systems, and order processing.",
+    assessmentPoints: [
+      "Setting up e-commerce infrastructure",
+      "Implementing shopping cart functionality",
+      "Integrating payment gateways",
+      "Managing products and inventory"
     ]
   },
   {
@@ -143,6 +208,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=41",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=42",
+    ],
+    videoUrl: "https://example.com/video7.mp4",
+    categories: "UI UX Design . Branding",
+    studentsCount: 160,
+    description: "Learn how to create compelling brand identities that resonate with your target audience. This course covers logo design, typography, brand guidelines, and visual identity systems.",
+    assessmentPoints: [
+      "Understanding brand identity principles",
+      "Creating logos and visual elements",
+      "Developing brand guidelines",
+      "Applying brand identity across platforms"
     ]
   },
   {
@@ -155,6 +230,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=46",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=47",
+    ],
+    videoUrl: "https://example.com/video8.mp4",
+    categories: "Web Developer . Backend Development",
+    studentsCount: 210,
+    description: "Master backend development and API creation. Learn about RESTful APIs, database design, authentication, security, and server-side programming best practices.",
+    assessmentPoints: [
+      "Designing RESTful APIs",
+      "Working with databases",
+      "Implementing authentication",
+      "Ensuring API security"
     ]
   },
   {
@@ -167,6 +252,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=51",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=52",
+    ],
+    videoUrl: "https://example.com/video9.mp4",
+    categories: "UI UX Design . Dashboard Design",
+    studentsCount: 175,
+    description: "Learn how to design effective dashboards that present complex data in an intuitive way. This course covers data visualization, information architecture, and dashboard best practices.",
+    assessmentPoints: [
+      "Understanding dashboard design principles",
+      "Creating data visualizations",
+      "Designing information architecture",
+      "Building interactive dashboards"
     ]
   }
 ]

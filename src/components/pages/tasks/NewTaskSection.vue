@@ -53,6 +53,11 @@ interface Task {
   daysLeft: string
   image: string
   teamAvatars: string[]
+  videoUrl?: string
+  categories?: string
+  studentsCount?: number
+  description?: string
+  assessmentPoints?: string[]
 }
 
 const router = useRouter()
@@ -69,6 +74,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=61",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=62",
+    ],
+    videoUrl: "https://example.com/video10.mp4",
+    categories: "Frontend Developer . React Development",
+    studentsCount: 240,
+    description: "Learn how to build modern web applications using React. This comprehensive course covers components, hooks, state management, routing, and best practices for building scalable React applications.",
+    assessmentPoints: [
+      "Understanding React fundamentals",
+      "Working with components and props",
+      "Managing state with hooks",
+      "Building complete React applications"
     ]
   },
   {
@@ -82,6 +97,16 @@ const defaultTasks: Task[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=63",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=64",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=65",
+    ],
+    videoUrl: "https://example.com/video11.mp4",
+    categories: "UI UX Design . Mobile Design",
+    studentsCount: 195,
+    description: "Master mobile UI design principles and create stunning mobile interfaces. Learn about mobile-first design, touch interactions, responsive layouts, and platform-specific design guidelines.",
+    assessmentPoints: [
+      "Understanding mobile design principles",
+      "Creating touch-friendly interfaces",
+      "Designing for different screen sizes",
+      "Following platform guidelines"
     ]
   },
   {
@@ -94,6 +119,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=66",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=67",
+    ],
+    videoUrl: "https://example.com/video12.mp4",
+    categories: "Web Developer . Landing Pages",
+    studentsCount: 165,
+    description: "Create high-converting landing pages that drive results. Learn about conversion optimization, A/B testing, persuasive copywriting, and design techniques that turn visitors into customers.",
+    assessmentPoints: [
+      "Understanding landing page structure",
+      "Writing persuasive copy",
+      "Optimizing for conversions",
+      "Testing and improving performance"
     ]
   },
   {
@@ -107,6 +142,16 @@ const defaultTasks: Task[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=68",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=69",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=70",
+    ],
+    videoUrl: "https://example.com/video13.mp4",
+    categories: "Backend Developer . API Development",
+    studentsCount: 205,
+    description: "Build robust REST APIs from scratch. Learn about HTTP methods, status codes, request/response handling, authentication, error handling, and API documentation best practices.",
+    assessmentPoints: [
+      "Designing RESTful API endpoints",
+      "Implementing CRUD operations",
+      "Handling authentication and authorization",
+      "Documenting APIs effectively"
     ]
   },
   {
@@ -119,6 +164,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=71",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=72",
+    ],
+    videoUrl: "https://example.com/video14.mp4",
+    categories: "UI UX Design . Wireframing",
+    studentsCount: 140,
+    description: "Learn the fundamentals of wireframing and information architecture. This course teaches you how to plan and structure your designs before diving into visual details, ensuring better user experiences.",
+    assessmentPoints: [
+      "Understanding wireframing basics",
+      "Creating information architecture",
+      "Using wireframing tools",
+      "Translating wireframes to designs"
     ]
   },
   {
@@ -131,6 +186,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=73",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=74",
+    ],
+    videoUrl: "https://example.com/video15.mp4",
+    categories: "Backend Developer . Database Design",
+    studentsCount: 185,
+    description: "Master database design and schema creation. Learn about normalization, relationships, indexing, query optimization, and best practices for designing efficient and scalable databases.",
+    assessmentPoints: [
+      "Understanding database fundamentals",
+      "Designing normalized schemas",
+      "Creating relationships and constraints",
+      "Optimizing database performance"
     ]
   },
   {
@@ -144,6 +209,16 @@ const defaultTasks: Task[] = [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=75",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=76",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=77",
+    ],
+    videoUrl: "https://example.com/video16.mp4",
+    categories: "UI UX Design . Icon Design",
+    studentsCount: 155,
+    description: "Create cohesive icon sets that enhance your design projects. Learn about icon design principles, consistency, scalability, and how to create icons that work across different platforms and sizes.",
+    assessmentPoints: [
+      "Understanding icon design principles",
+      "Creating consistent icon sets",
+      "Designing scalable icons",
+      "Exporting icons for different uses"
     ]
   },
   {
@@ -156,6 +231,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=78",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=79",
+    ],
+    videoUrl: "https://example.com/video17.mp4",
+    categories: "Full Stack Developer . Security",
+    studentsCount: 230,
+    description: "Implement secure authentication systems for your applications. Learn about password hashing, JWT tokens, OAuth, session management, and security best practices for protecting user data.",
+    assessmentPoints: [
+      "Understanding authentication methods",
+      "Implementing secure login systems",
+      "Working with JWT tokens",
+      "Ensuring application security"
     ]
   },
   {
@@ -168,6 +253,16 @@ const defaultTasks: Task[] = [
     teamAvatars: [
       "https://api.dicebear.com/7.x/avataaars/svg?seed=80",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=81",
+    ],
+    videoUrl: "https://example.com/video18.mp4",
+    categories: "Product Manager . Agile Development",
+    studentsCount: 110,
+    description: "Learn how to write effective user stories that drive product development. This course covers story structure, acceptance criteria, prioritization, and how to work with development teams.",
+    assessmentPoints: [
+      "Writing clear user stories",
+      "Defining acceptance criteria",
+      "Prioritizing user stories",
+      "Collaborating with development teams"
     ]
   }
 ]
