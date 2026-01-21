@@ -3,11 +3,14 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
+    redirect: '/overview'
+  },
+  {
+    path: '/overview',
     component: () => import('../layouts/DashboardLayout.vue'),
-    redirect: '/overview',
     children: [
       {
-        path: 'overview',
+        path: '',
         name: 'Overview',
         component: () => import('../pages/overview/OverviewPage.vue')
       }
@@ -18,9 +21,53 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../layouts/DefaultLayout.vue'),
     children: [
       {
-        path: 'task',
+        path: '',
         name: 'Task',
         component: () => import('../pages/task/TaskPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/tasks/:id',
+    component: () => import('../layouts/DefaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'TaskDetail',
+        component: () => import('../pages/tasks/TaskDetailPage.vue')
+      }
+    ]
+  },
+  {
+    path: '/mentors',
+    component: () => import('../layouts/DefaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Mentors',
+        component: () => import('../pages/task/TaskPage.vue') // Placeholder
+      }
+    ]
+  },
+  {
+    path: '/message',
+    component: () => import('../layouts/DefaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Message',
+        component: () => import('../pages/task/TaskPage.vue') // Placeholder
+      }
+    ]
+  },
+  {
+    path: '/settings',
+    component: () => import('../layouts/DefaultLayout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Settings',
+        component: () => import('../pages/task/TaskPage.vue') // Placeholder
       }
     ]
   }

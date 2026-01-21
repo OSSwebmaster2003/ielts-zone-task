@@ -9,7 +9,7 @@
         </button>
         <div class="hidden md:flex flex-col gap-2">
           <h1 class="text-2xl font-semibold leading-[150%] tracking-[-3%] text-[#141522]">
-            Explore Task
+            {{ pageHeader || "" }}
           </h1>
         </div>
       </div>
@@ -58,7 +58,9 @@ import BellIcon from './icons/BellIcon.vue'
 import FilterIcon from './icons/FilterIcon.vue'
 import Input from '@/ui/Input.vue'
 import { useSidebar } from '@/composables/useSidebar'
+import { usePageHeader } from '@/composables/usePageHeader'
 
 const { toggleSidebar } = useSidebar()
+const { pageHeader } = usePageHeader()
 const searchQuery = ref('')
 </script>
