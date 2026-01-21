@@ -1,10 +1,13 @@
 <template>
-  <div class="bg-[#141522] text-white rounded-[10px] p-5">
-    <h3 class="text-white font-semibold text-base leading-[150%] tracking-[-2%] mb-4">Running Task</h3>
-    <div class="">
-      <div class="text-[32px] font-bold mb-2">
+  <div
+    class="bg-[#141522] flex flex-row sm:flex-col justify-between items-center sm:items-start text-white rounded-[10px] p-5 flex-wrap">
+    <div>
+      <h3 class="text-white font-semibold text-base leading-[150%] tracking-[-2%] sm:mb-4 mb-2">Running Task</h3>
+      <div class="text-[32px] font-bold sm:mb-2 mb-1">
         {{ runningTaskData.current }}
       </div>
+    </div>
+    <div class="">
       <div class="flex items-center gap-4.5">
         <div class="w-20 h-20 relative">
           <canvas ref="progressCanvas"></canvas>

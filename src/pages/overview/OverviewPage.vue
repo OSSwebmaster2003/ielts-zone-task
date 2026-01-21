@@ -8,11 +8,20 @@ import UpcomingTasks from '@/components/pages/overview/UpcomingTasks.vue'
 <template>
   <div class="overview-page">
     <!-- Top Section: Running Task and Activity Chart -->
+    <div class="flex md:hidden flex-col gap-2 mb-4">
+      <h1 class="text-2xl font-semibold leading-[150%] tracking-[-3%] text-[#141522]">
+        Hi, Dennis Nzioki
+      </h1>
+      <p class="text-[#54577A] text-base tracking-[-2%] leading-[150%]">
+        Let's finish your task today!
+      </p>
+    </div>
+
     <div class="grid grid-cols-12 gap-6 mb-8">
-      <div class="2xl:col-span-3 xl:col-span-4 col-span-5">
+      <div class="2xl:col-span-3 xl:col-span-4 sm:col-span-5 col-span-12">
         <RunningTaskCard />
       </div>
-      <div class="2xl:col-span-9 xl:col-span-8 col-span-7">
+      <div class="2xl:col-span-9 xl:col-span-8 sm:col-span-7 col-span-12">
         <ActivityChart />
       </div>
     </div>

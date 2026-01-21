@@ -1,14 +1,9 @@
 <template>
   <div class="bg-[#F5F5F7] rounded-[10px] p-5 rder-gray-200">
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between sm:mb-6 mb-4">
       <h3 class="text-base font-semibold leading-[150%] tracking-[-2%] text-[#141522]">Activity</h3>
-      <Select
-        v-model="selectedPeriod"
-        :options="periodOptions"
-        :borderless="true"
-        width="w-31"
-        textColor="text-[#141522]"
-      />
+      <Select v-model="selectedPeriod" :options="periodOptions" :borderless="true" width="w-31"
+        textColor="text-[#141522]" />
     </div>
 
     <div class="h-40">

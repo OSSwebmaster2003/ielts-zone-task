@@ -1,12 +1,22 @@
 <script setup lang="ts">
+import { provide } from 'vue'
 import Sidebar from '@/components/common/Sidebar.vue'
 import Header from '@/components/common/Header.vue'
 import CalendarWidget from '@/components/pages/overview/CalendarWidget.vue'
 import TaskToday from '@/components/pages/overview/TaskToday.vue'
+import { useSidebar } from '@/composables/useSidebar'
+
+const { isSidebarOpen, closeSidebar } = useSidebar()
+
+// Provide sidebar state to child components
+provide('sidebar', { isSidebarOpen, closeSidebar })
 </script>
 
 <template>
   <div class="dashboard-layout min-h-screen bg-gray-50">
+    <!-- Overlay for mobile sidebar -->
+    <div v-if="isSidebarOpen" class="dashboard-layout__overlay" @click="closeSidebar"></div>
+
     <Sidebar />
 
     <main class="dashboard-layout__main">
@@ -155,20 +165,29 @@ import TaskToday from '@/components/pages/overview/TaskToday.vue'
   }
 }
 
-@media (max-width: 768px) {
-  .dashboard-layout__sidebar-left {
-    position: fixed;
-    left: -280px;
-    z-index: 100;
-    transition: left 0.3s ease;
-  }
+.dashboard-layout__overlay {
+  display: none;
+}
 
-  .dashboard-layout__sidebar-left.open {
+@media (max-width: 767px) {
+  .dashboard-layout__overlay {
+    display: block;
+    position: fixed;
+    top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    transition: opacity 0.3s ease;
   }
 
   .dashboard-layout {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-layout__content {
+    padding: 24px;
   }
 }
 </style>

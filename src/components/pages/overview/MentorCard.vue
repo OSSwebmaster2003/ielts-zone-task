@@ -1,32 +1,25 @@
 <template>
-  <div class="bg-white rounded-[10px] p-6">
-    <div class="flex items-start gap-3 mb-5">
-      <img :src="image" :alt="name" class="w-12 h-12 rounded-full shrink-0" />
-      <div class="flex-1 min-w-0">
-        <h4 class="font-semibold text-[#141522] text-base mb-1 leading-[150%] tracking-[-2%]">
-          {{ name }}
-        </h4>
-        <p class="text-[#54577A] text-xs leading-[100%] tracking-[-2%]">
-          {{ role }}
-        </p>
-      </div>
-      <div class="shrink-0">
-        <button
-          v-if="!followed"
-          class="text-[#546fff] text-sm font-medium hover:opacity-80 transition-opacity cursor-pointer leading-[150%] tracking-[-2%]"
-        >
-          + Follow
-        </button>
-        <span
-          v-else
-          class="text-gray-500 text-sm"
-        >
-          Followed
-        </span>
-      </div>
+  <div class="bg-white rounded-[10px] sm:p-6 p-4 flex items-center gap-3 flex-wrap">
+    <img :src="image" :alt="name" class="w-12 h-12 rounded-full shrink-0" />
+    <div class="flex-1 min-w-0">
+      <h4 class="font-semibold text-[#141522] text-base mb-1 leading-[150%] tracking-[-2%] wrap-break-word">
+        {{ name }}
+      </h4>
+      <p class="text-[#54577A] text-xs leading-[100%] tracking-[-2%] wrap-break-word">
+        {{ role }}
+      </p>
+    </div>
+    <div class="shrink-0 w-full sm:w-auto">
+      <button v-if="!followed"
+        class="text-[#546fff] text-sm font-medium hover:opacity-80 transition-opacity cursor-pointer leading-[150%] tracking-[-2%] whitespace-nowrap">
+        + Follow
+      </button>
+      <span v-else class="text-gray-500 text-sm whitespace-nowrap">
+        Followed
+      </span>
     </div>
 
-    <div class="flex items-center gap-8 text-xs">
+    <div class="flex items-center flex-wrap sm:gap-x-8 gap-x-4 gap-y-2 text-xs">
       <div class="flex items-center gap-2">
         <DoubledTasksIcon :size="24" class="text-[#54577A]" />
         <span class="text-[#141522] text-sm leading-[150%] tracking-[-2%] font-medium">
@@ -40,6 +33,8 @@
       </div>
     </div>
   </div>
+
+
 </template>
 
 <script setup lang="ts">

@@ -3,70 +3,37 @@
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]">Upcoming Tasks</h3>
       <div class="flex gap-2">
-        <button 
-          @click="prevSlide"
-          :disabled="isAtStart"
-          :class="[
-            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-            isAtStart 
-              ? 'cursor-not-allowed' 
-              : 'hover:bg-gray-100 cursor-pointer'
-          ]"
-        >
-          <ChevronLeft 
-            :size="24" 
-            :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'" 
-          />
+        <button @click="prevSlide" :disabled="isAtStart" :class="[
+          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+          isAtStart
+            ? 'cursor-not-allowed'
+            : 'hover:bg-gray-100 cursor-pointer'
+        ]">
+          <ChevronLeft :size="24" :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'" />
         </button>
-        <button 
-          @click="nextSlide"
-          :disabled="isAtEnd"
-          :class="[
-            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-            isAtEnd 
-              ? 'cursor-not-allowed' 
-              : 'hover:bg-gray-100 cursor-pointer'
-          ]"
-        >
-          <ChevronRight 
-            :size="24" 
-            :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'" 
-          />
+        <button @click="nextSlide" :disabled="isAtEnd" :class="[
+          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+          isAtEnd
+            ? 'cursor-not-allowed'
+            : 'hover:bg-gray-100 cursor-pointer'
+        ]">
+          <ChevronRight :size="24" :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'" />
         </button>
       </div>
     </div>
-    
-    <n-carousel
-      ref="carouselRef"
-      :show-dots="false"
-      :show-arrow="false"
-      :slides-per-view="2"
-      :space-between="16"
-      :loop="false"
-      draggable
-      @update:current-index="onSlideChange"
-      class="upcoming-tasks-carousel"
-    >
-      <div
-        v-for="task in tasks"
-        :key="task.id"
-        class="task-slide"
-      >
-        <UpcomingTaskCard
-          :title="task.title"
-          :category="task.category"
-          :progress="task.progress"
-          :daysLeft="task.daysLeft"
-          :image="task.image"
-          :teamAvatars="task.teamAvatars"
-        />
+
+    <n-carousel ref="carouselRef" :show-dots="false" :show-arrow="false" :slides-per-view="slidesPerView"
+      :space-between="16" :loop="false" draggable @update:current-index="onSlideChange" class="upcoming-tasks-carousel">
+      <div v-for="task in tasks" :key="task.id" class="task-slide">
+        <UpcomingTaskCard :title="task.title" :category="task.category" :progress="task.progress"
+          :daysLeft="task.daysLeft" :image="task.image" :teamAvatars="task.teamAvatars" />
       </div>
     </n-carousel>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { NCarousel } from 'naive-ui'
 import UpcomingTaskCard from '@/components/pages/overview/UpcomingTaskCard.vue'
@@ -133,12 +100,17 @@ const tasks = ref<Task[]>([
 
 const carouselRef = ref<InstanceType<typeof NCarousel> | null>(null)
 const currentIndex = ref(0)
-const slidesPerView = 2
+const windowWidth = ref(window.innerWidth)
+
+const slidesPerView = computed(() => {
+  // sm breakpoint is 640px in Tailwind
+  return windowWidth.value < 640 ? 1 : 2
+})
 
 const isAtStart = computed(() => currentIndex.value === 0)
 
 const isAtEnd = computed(() => {
-  return currentIndex.value >= tasks.value.length - slidesPerView
+  return currentIndex.value >= tasks.value.length - slidesPerView.value
 })
 
 const onSlideChange = (index: number) => {
@@ -156,8 +128,18 @@ const nextSlide = () => {
     carouselRef.value?.next()
   }
 }
+
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
