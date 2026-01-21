@@ -1,39 +1,50 @@
 <template>
-  <div class="bg-gray-50 rounded-xl p-4">
-    <div class="flex items-center gap-3 mb-4">
-      <img :src="image" :alt="name" class="w-12 h-12 rounded-full" />
-      <div class="flex-1">
-        <h4 class="font-semibold text-[#141522] text-sm">{{ name }}</h4>
-        <p class="text-gray-600 text-xs">{{ role }}</p>
+  <div class="bg-white rounded-[10px] p-6">
+    <div class="flex items-start gap-3 mb-5">
+      <img :src="image" :alt="name" class="w-12 h-12 rounded-full shrink-0" />
+      <div class="flex-1 min-w-0">
+        <h4 class="font-semibold text-[#141522] text-base mb-1 leading-[150%] tracking-[-2%]">
+          {{ name }}
+        </h4>
+        <p class="text-[#54577A] text-xs leading-[100%] tracking-[-2%]">
+          {{ role }}
+        </p>
+      </div>
+      <div class="shrink-0">
+        <button
+          v-if="!followed"
+          class="text-[#546fff] text-sm font-medium hover:opacity-80 transition-opacity cursor-pointer leading-[150%] tracking-[-2%]"
+        >
+          + Follow
+        </button>
+        <span
+          v-else
+          class="text-gray-500 text-sm"
+        >
+          Followed
+        </span>
       </div>
     </div>
 
-    <button
-      :class="[
-        'w-full py-2 rounded-lg text-sm font-semibold transition-all mb-3',
-        followed
-          ? 'bg-gray-200 text-[#141522] hover:bg-gray-300'
-          : 'bg-white text-[#546fff] border border-[#546fff] hover:bg-[#546fff] hover:text-white'
-      ]"
-    >
-      {{ followed ? 'Followed' : '+ Follow' }}
-    </button>
-
-    <div class="space-y-2 text-xs text-gray-600">
+    <div class="flex items-center gap-8 text-xs">
       <div class="flex items-center gap-2">
-        <CheckCircle :size="16" class="text-gray-400" />
-        {{ tasks }}
+        <DoubledTasksIcon :size="24" class="text-[#54577A]" />
+        <span class="text-[#141522] text-sm leading-[150%] tracking-[-2%] font-medium">
+          {{ tasks }}
+        </span>
       </div>
       <div class="flex items-center gap-2">
-        <Star :size="16" class="text-yellow-400 fill-yellow-400" />
-        <span class="font-semibold">{{ rating }}</span> ({{ reviews }})
+        <Star :size="14" class="text-[#FFB054] fill-[#FFB054]" />
+        <span class="text-[#141522] font-medium text-sm leading-[150%] tracking-[-2%]">{{ rating }}</span>
+        <span class="text-[#141522] font-medium text-sm leading-[150%] tracking-[-2%]">({{ reviews }})</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { CheckCircle, Star } from 'lucide-vue-next'
+import { Star } from 'lucide-vue-next'
+import DoubledTasksIcon from '@/components/common/icons/DoubledTasksIcon.vue'
 
 interface Props {
   name: string
