@@ -51,6 +51,25 @@ import TaskToday from '@/components/pages/overview/TaskToday.vue'
   flex: 1;
   overflow-y: auto;
   padding: 32px;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.dashboard-layout__content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dashboard-layout__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard-layout__content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.dashboard-layout__content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .dashboard-layout__sidebar-right {
@@ -59,6 +78,25 @@ import TaskToday from '@/components/pages/overview/TaskToday.vue'
   overflow-y: auto;
   height: 100vh;
   padding: 32px;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.dashboard-layout__sidebar-right::-webkit-scrollbar {
+  width: 4px;
+}
+
+.dashboard-layout__sidebar-right::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard-layout__sidebar-right::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.dashboard-layout__sidebar-right::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
 }
 
 @media (max-width: 1024px) {
