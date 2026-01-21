@@ -13,9 +13,9 @@
     <div class="flex flex-col">
       <img src="@/assets/logo.svg" alt="Logo" class="w-auto h-10" />
       <nav class="space-y-6 mt-15">
-        <button v-for="item in navItems" :key="item.label" :class="[
+        <router-link v-for="item in navItems" :key="item.label" :to="item.path" @click="handleNavClick" :class="[
           'w-full flex items-center gap-3 px-5 py-2.5 rounded-[10px] transition-all text-left text-sm cursor-pointer',
-          item.active
+          isActive(item.path)
             ? 'bg-gray-100 text-black font-semibold'
             : 'text-gray-600 hover:bg-gray-50'
         ]">
@@ -23,7 +23,7 @@
           <span class="text-sm leading-[150%] tracking-[-2%]">
             {{ item.label }}
           </span>
-        </button>
+        </router-link>
       </nav>
     </div>
 
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { X } from 'lucide-vue-next'
 import OverviewIcon from './icons/OverviewIcon.vue'
 import TaskIcon from './icons/TaskIcon.vue'
@@ -42,15 +43,33 @@ import SettingsIcon from './icons/SettingsIcon.vue'
 import HelpCenter from './HelpCenter.vue'
 import { useSidebar } from '@/composables/useSidebar'
 
-const navItems = ref([
-  { icon: OverviewIcon, label: 'Overview', active: true },
-  { icon: TaskIcon, label: 'Task', active: false },
-  { icon: MentorsIcon, label: 'Mentors', active: false },
-  { icon: MessageIcon, label: 'Message', active: false },
-  { icon: SettingsIcon, label: 'Settings', active: false },
+const route = useRoute()
+
+interface NavItem {
+  icon: any
+  label: string
+  path: string
+}
+
+const navItems = ref<NavItem[]>([
+  { icon: OverviewIcon, label: 'Overview', path: '/overview' },
+  { icon: TaskIcon, label: 'Task', path: '/task' },
+  { icon: MentorsIcon, label: 'Mentors', path: '/mentors' },
+  { icon: MessageIcon, label: 'Message', path: '/message' },
+  { icon: SettingsIcon, label: 'Settings', path: '/settings' },
 ])
 
 const { isSidebarOpen, closeSidebar } = useSidebar()
+
+const isActive = (path: string) => {
+  return route.path === path || route.path.startsWith(path + '/')
+}
+
+const handleNavClick = () => {
+  if (window.innerWidth <= 767) {
+    closeSidebar()
+  }
+}
 </script>
 
 <style scoped>
