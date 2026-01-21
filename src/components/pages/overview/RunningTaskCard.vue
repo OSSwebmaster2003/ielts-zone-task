@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#141522] text-white rounded-2xl p-5">
+  <div class="bg-[#141522] text-white rounded-[10px] p-5">
     <h3 class="text-white font-semibold text-base leading-[150%] tracking-[-2%] mb-4">Running Task</h3>
     <div class="">
       <div class="text-[32px] font-bold mb-2">

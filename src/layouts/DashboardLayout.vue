@@ -12,7 +12,17 @@ import TaskToday from '@/components/pages/overview/TaskToday.vue'
     <main class="dashboard-layout__main">
       <Header />
       <div class="dashboard-layout__content">
-        <router-view />
+        <div class="dashboard-layout__content-wrapper">
+          <div class="dashboard-layout__page-content">
+            <router-view />
+          </div>
+          <aside class="dashboard-layout__sidebar-right-mobile">
+            <div class="space-y-6">
+              <CalendarWidget />
+              <TaskToday />
+            </div>
+          </aside>
+        </div>
       </div>
     </main>
 
@@ -53,6 +63,27 @@ import TaskToday from '@/components/pages/overview/TaskToday.vue'
   padding: 32px;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
+}
+
+.dashboard-layout__content-wrapper {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+}
+
+.dashboard-layout__page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-layout__sidebar-right-mobile {
+  display: none;
+  width: 360px;
+  flex-shrink: 0;
+  background: #F5F5F7;
+  padding: 0;
+  border-radius: 10px;
+  height: fit-content;
 }
 
 .dashboard-layout__content::-webkit-scrollbar {
@@ -99,9 +130,24 @@ import TaskToday from '@/components/pages/overview/TaskToday.vue'
   background: rgba(0, 0, 0, 0.15);
 }
 
+@media (max-width: 1280px) {
+  .dashboard-layout__sidebar-right {
+    width: 360px;
+  }
+}
+
 @media (max-width: 1024px) {
   .dashboard-layout__sidebar-right {
     display: none;
+  }
+
+  .dashboard-layout__sidebar-right-mobile {
+    display: block;
+    width: 100%;
+  }
+
+  .dashboard-layout__content-wrapper {
+    flex-direction: column;
   }
 
   .dashboard-layout {

@@ -9,19 +9,19 @@ import UpcomingTasks from '@/components/pages/overview/UpcomingTasks.vue'
   <div class="overview-page">
     <!-- Top Section: Running Task and Activity Chart -->
     <div class="grid grid-cols-12 gap-6 mb-8">
-      <div class="col-span-3">
+      <div class="2xl:col-span-3 xl:col-span-4 col-span-5">
         <RunningTaskCard />
       </div>
-      <div class="col-span-9">
+      <div class="2xl:col-span-9 xl:col-span-8 col-span-7">
         <ActivityChart />
       </div>
     </div>
-    
+
     <!-- Monthly Mentors Section -->
     <div class="mb-8">
       <MentorsSection />
     </div>
-    
+
     <!-- Upcoming Tasks Section -->
     <div>
       <UpcomingTasks />
@@ -29,6 +29,4 @@ import UpcomingTasks from '@/components/pages/overview/UpcomingTasks.vue'
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
