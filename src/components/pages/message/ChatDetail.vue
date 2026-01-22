@@ -1,10 +1,10 @@
 <template>
-  <div class="chat-detail flex-1 flex flex-col bg-white h-full">
+  <div class="chat-detail flex-1 flex flex-col bg-white h-full absolute md:relative inset-0 z-20 md:z-auto">
     <!-- Chat Header -->
-    <ChatHeader :chat="chat" />
+    <ChatHeader :chat="chat" @back="$emit('back')" />
 
     <!-- Messages Area -->
-    <div class="flex-1 overflow-y-auto p-4 bg-gray-50">
+    <div class="flex-1 overflow-y-auto messages-area p-4 bg-gray-50">
       <div class="max-w-3xl mx-auto space-y-4">
         <div class="flex justify-center my-4">
           <div class="bg-[#141522] text-white px-6 py-3 rounded-full text-xs">
@@ -36,6 +36,7 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<{
   'send-message': [text: string]
+  'back': []
 }>()
 
 const handleSendMessage = (text: string) => {
@@ -46,5 +47,9 @@ const handleSendMessage = (text: string) => {
 <style scoped>
 .chat-detail {
   height: calc(100vh - 180px);
+}
+
+.messages-area {
+  height: calc(100% - 158px);
 }
 </style>

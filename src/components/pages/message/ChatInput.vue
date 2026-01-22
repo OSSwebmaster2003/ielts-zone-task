@@ -2,7 +2,7 @@
   <div class="chat-input bg-white border-t border-gray-200 p-4">
     <div class="flex items-center gap-3">
       <input v-model="messageText" type="text" placeholder="Send your message..."
-        class="flex-1 px-4 py-3 rounded-[10px] border border-none outline-none bg-transparent focus:outline-none focus:border-none text-sm"
+        class="flex-1 shrink-0 px-4 py-3 rounded-[10px] border border-none outline-none bg-transparent focus:outline-none focus:border-none text-sm"
         @keyup.enter="handleSend" />
 
       <button

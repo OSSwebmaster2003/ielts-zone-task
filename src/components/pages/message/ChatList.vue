@@ -1,5 +1,6 @@
 <template>
-  <div class="chat-list w-full sm:w-[400px] border-r border-gray-200 bg-white flex flex-col h-full">
+  <div
+    class="chat-list w-full md:w-[400px] border-r border-gray-200 bg-white flex flex-col h-full absolute md:relative inset-0 z-10 md:z-auto">
     <!-- Search Bar -->
     <div class="p-4 border-b border-gray-200">
       <div class="relative">

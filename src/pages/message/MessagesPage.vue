@@ -1,10 +1,16 @@
 <template>
-  <div class="messages-page flex">
+  <div class="messages-page flex relative">
     <!-- Left Sidebar: Chat List -->
-    <ChatList :chats="chats" :selectedChatId="selectedChatId" @select-chat="handleSelectChat" />
+    <ChatList :chats="chats" :selectedChatId="selectedChatId" :class="[
+      'md:block',
+      selectedChatId ? 'hidden' : 'block'
+    ]" @select-chat="handleSelectChat" />
 
-    <!-- Right Side: Chat Detail (only visible when a chat is selected) -->
-    <ChatDetail v-if="selectedChatId" :chat="selectedChat" @send-message="handleSendMessage" />
+    <!-- Right Side: Chat Detail -->
+    <ChatDetail v-if="selectedChatId" :chat="selectedChat" :class="[
+      'md:block',
+      selectedChatId ? 'block' : 'hidden'
+    ]" @send-message="handleSendMessage" @back="handleBack" />
   </div>
 </template>
 
@@ -142,6 +148,10 @@ const handleSelectChat = (chatId: string) => {
   if (chat) {
     chat.unread = false
   }
+}
+
+const handleBack = () => {
+  selectedChatId.value = null
 }
 
 const handleSendMessage = (text: string) => {
