@@ -51,12 +51,12 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/message',
-    component: () => import('../layouts/DefaultLayout.vue'),
+    component: () => import('../layouts/DefaultLayoutWithoutSearchHeader.vue'),
     children: [
       {
         path: '',
         name: 'Message',
-        component: () => import('../pages/task/TaskPage.vue') // Placeholder
+        component: () => import('../pages/message/MessagesPage.vue')
       }
     ]
   },
