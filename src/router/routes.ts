@@ -62,7 +62,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/settings',
-    component: () => import('../layouts/DefaultLayout.vue'),
+    component: () => import('../layouts/DefaultLayoutWithoutSearchHeader.vue'),
     children: [
       {
         path: '',

@@ -39,7 +39,6 @@
       </div>
     </div>
 
-    <!-- Save Changes Button -->
     <div class="pt-4">
       <button @click="handleSaveChanges"
         class="px-6 py-3 bg-[#546fff] text-white font-medium rounded-lg hover:bg-[#4560e6] transition-colors sm:w-auto w-full">
@@ -50,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Switch from '@/ui/Switch.vue'
 
 interface NotificationSettings {
@@ -60,12 +59,29 @@ interface NotificationSettings {
   mentorHelp: boolean
 }
 
-const notifications = ref<NotificationSettings>({
+const STORAGE_KEY = 'notificationSettings'
+
+const defaultNotifications: NotificationSettings = {
   message: true,
   taskUpdate: false,
   taskDeadline: true,
   mentorHelp: false,
-})
+}
+
+const loadNotifications = (): NotificationSettings => {
+  const stored = localStorage.getItem(STORAGE_KEY)
+  if (stored) {
+    try {
+      return JSON.parse(stored)
+    } catch (e) {
+      console.error('Error parsing notification settings from localStorage:', e)
+    }
+  }
+  return defaultNotifications
+}
+
+const savedNotifications = loadNotifications()
+const notifications = ref<NotificationSettings>(savedNotifications)
 
 const handleNotificationChange = (key: keyof NotificationSettings, value: boolean) => {
   notifications.value[key] = value
@@ -73,9 +89,18 @@ const handleNotificationChange = (key: keyof NotificationSettings, value: boolea
 }
 
 const handleSaveChanges = () => {
-  console.log('Saving notification changes:', notifications.value)
-  // Add your save logic here
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications.value))
+    console.log('Notification settings saved successfully:', notifications.value)
+  } catch (e) {
+    console.error('Error saving notification settings to localStorage:', e)
+  }
 }
+
+onMounted(() => {
+  const saved = loadNotifications()
+  notifications.value = saved
+})
 </script>
 
 <style scoped></style>

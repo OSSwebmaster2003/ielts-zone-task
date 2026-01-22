@@ -21,7 +21,7 @@
         <img src="@/assets/profile.png" alt="Profile" class="w-13 h-13 rounded-full object-cover cursor-pointer" />
       </div>
     </div>
-    <div class="mt-6 w-full flex items-center justify-between sm:gap-8 gap-6">
+    <div v-if="hasSearch" class="mt-6 w-full flex items-center justify-between sm:gap-8 gap-6">
 
       <div class="flex-1 sm:max-w-[420px]">
         <Input v-model="searchQuery" placeholder="Search Task" :icon-component="Search" icon-position="after"
@@ -59,6 +59,14 @@ import FilterIcon from './icons/FilterIcon.vue'
 import Input from '@/ui/Input.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import { usePageHeader } from '@/composables/usePageHeader'
+
+interface Props {
+  hasSearch?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  hasSearch: true,
+})
 
 const { toggleSidebar } = useSidebar()
 const { pageHeader } = usePageHeader()
