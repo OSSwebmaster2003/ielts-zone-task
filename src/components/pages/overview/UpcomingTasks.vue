@@ -1,53 +1,19 @@
-<template>
-  <div class="">
-    <div class="flex items-center justify-between mb-6">
-      <h3 class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]">Upcoming Tasks</h3>
-      <div class="flex gap-2">
-        <button @click="prevSlide" :disabled="isAtStart" :class="[
-          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-          isAtStart
-            ? 'cursor-not-allowed'
-            : 'hover:bg-gray-100 cursor-pointer'
-        ]">
-          <ChevronLeft :size="24" :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'" />
-        </button>
-        <button @click="nextSlide" :disabled="isAtEnd" :class="[
-          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-          isAtEnd
-            ? 'cursor-not-allowed'
-            : 'hover:bg-gray-100 cursor-pointer'
-        ]">
-          <ChevronRight :size="24" :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'" />
-        </button>
-      </div>
-    </div>
-
-    <n-carousel ref="carouselRef" :show-dots="false" :show-arrow="false" :slides-per-view="slidesPerView"
-      :space-between="16" :loop="false" draggable @update:current-index="onSlideChange" class="upcoming-tasks-carousel">
-      <div v-for="task in tasks" :key="task.id" class="task-slide">
-        <UpcomingTaskCard :title="task.title" :category="task.category" :progress="task.progress"
-          :daysLeft="task.daysLeft" :image="task.image" :teamAvatars="task.teamAvatars" />
-      </div>
-    </n-carousel>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import { NCarousel } from 'naive-ui'
-import UpcomingTaskCard from '@/components/pages/overview/UpcomingTaskCard.vue'
-import task1 from '@/assets/task1.png'
-import task2 from '@/assets/task2.png'
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { NCarousel } from "naive-ui";
+import UpcomingTaskCard from "@/components/pages/overview/UpcomingTaskCard.vue";
+import task1 from "@/assets/task1.png";
+import task2 from "@/assets/task2.png";
 
 interface Task {
-  id: number
-  title: string
-  category: string
-  progress: string
-  daysLeft: string
-  image: string
-  teamAvatars: string[]
+  id: number;
+  title: string;
+  category: string;
+  progress: string;
+  daysLeft: string;
+  image: string;
+  teamAvatars: string[];
 }
 
 const tasks = ref<Task[]>([
@@ -63,8 +29,8 @@ const tasks = ref<Task[]>([
       "https://api.dicebear.com/7.x/avataaars/svg?seed=2",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=3",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=4",
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=5"
-    ]
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=5",
+    ],
   },
   {
     id: 2,
@@ -78,8 +44,8 @@ const tasks = ref<Task[]>([
       "https://api.dicebear.com/7.x/avataaars/svg?seed=7",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=8",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=9",
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=10"
-    ]
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=10",
+    ],
   },
   {
     id: 3,
@@ -93,53 +59,132 @@ const tasks = ref<Task[]>([
       "https://api.dicebear.com/7.x/avataaars/svg?seed=7",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=8",
       "https://api.dicebear.com/7.x/avataaars/svg?seed=9",
-      "https://api.dicebear.com/7.x/avataaars/svg?seed=10"
-    ]
-  }
-])
+      "https://api.dicebear.com/7.x/avataaars/svg?seed=10",
+    ],
+  },
+]);
 
-const carouselRef = ref<InstanceType<typeof NCarousel> | null>(null)
-const currentIndex = ref(0)
-const windowWidth = ref(window.innerWidth)
+const carouselRef = ref<InstanceType<typeof NCarousel> | null>(null);
+const currentIndex = ref(0);
+const windowWidth = ref(window.innerWidth);
 
 const slidesPerView = computed(() => {
-  // sm breakpoint is 640px in Tailwind
-  return windowWidth.value < 640 ? 1 : 2
-})
+  return windowWidth.value < 640 ? 1 : 2;
+});
 
-const isAtStart = computed(() => currentIndex.value === 0)
+const isAtStart = computed(() => currentIndex.value === 0);
 
 const isAtEnd = computed(() => {
-  return currentIndex.value >= tasks.value.length - slidesPerView.value
-})
+  return currentIndex.value >= tasks.value.length - slidesPerView.value;
+});
 
 const onSlideChange = (index: number) => {
-  currentIndex.value = index
-}
+  currentIndex.value = index;
+};
 
 const prevSlide = () => {
   if (!isAtStart.value) {
-    carouselRef.value?.prev()
+    carouselRef.value?.prev();
   }
-}
+};
 
 const nextSlide = () => {
   if (!isAtEnd.value) {
-    carouselRef.value?.next()
+    carouselRef.value?.next();
   }
-}
+};
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth
-}
+  windowWidth.value = window.innerWidth;
+};
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
+  window.addEventListener("resize", handleResize);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
+  window.removeEventListener("resize", handleResize);
+});
 </script>
 
-<style scoped></style>
+<template>
+  <div class="">
+    <div class="flex items-center justify-between mb-6">
+      <h3
+        class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]"
+      >
+        Upcoming Tasks
+      </h3>
+      <div class="flex gap-2">
+        <button
+          @click="prevSlide"
+          :disabled="isAtStart"
+          :class="[
+            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+            isAtStart
+              ? 'cursor-not-allowed'
+              : 'hover:bg-gray-100 cursor-pointer',
+          ]"
+        >
+          <ChevronLeft
+            :size="24"
+            :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'"
+          />
+        </button>
+        <button
+          @click="nextSlide"
+          :disabled="isAtEnd"
+          :class="[
+            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+            isAtEnd ? 'cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer',
+          ]"
+        >
+          <ChevronRight
+            :size="24"
+            :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'"
+          />
+        </button>
+      </div>
+    </div>
+
+    <n-carousel
+      ref="carouselRef"
+      :show-dots="false"
+      :show-arrow="false"
+      :slides-per-view="slidesPerView"
+      :space-between="16"
+      :loop="false"
+      draggable
+      @update:current-index="onSlideChange"
+      class="upcoming-tasks-carousel"
+    >
+      <div v-for="task in tasks" :key="task.id" class="task-slide">
+        <UpcomingTaskCard
+          :title="task.title"
+          :category="task.category"
+          :progress="task.progress"
+          :daysLeft="task.daysLeft"
+          :image="task.image"
+          :teamAvatars="task.teamAvatars"
+        />
+      </div>
+    </n-carousel>
+  </div>
+</template>
+
+<style scoped>
+:deep(.n-carousel__slides) {
+  display: flex;
+  align-items: stretch;
+}
+
+:deep(.n-carousel__slide) {
+  height: auto !important;
+  display: flex;
+  width: 100%;
+}
+
+:deep(.task-slide) {
+  width: 100%;
+}
+</style>

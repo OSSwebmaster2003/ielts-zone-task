@@ -1,9 +1,18 @@
 <template>
-  <div class="bg-[#F5F5F7] rounded-[10px] p-5 rder-gray-200">
-    <div class="flex items-center justify-between sm:mb-6 mb-4">
-      <h3 class="text-base font-semibold leading-[150%] tracking-[-2%] text-[#141522]">Activity</h3>
-      <Select v-model="selectedPeriod" :options="periodOptions" :borderless="true" width="w-31"
-        textColor="text-[#141522]" />
+  <div class="bg-[#F5F5F7] rounded-[10px] p-5 rder-gray-200 w-full h-full">
+    <div class="flex items-center justify-between sm:mb-6 mb-4 flex-wrap">
+      <h3
+        class="text-base font-semibold leading-[150%] tracking-[-2%] text-[#141522]"
+      >
+        Activity
+      </h3>
+      <Select
+        v-model="selectedPeriod"
+        :options="periodOptions"
+        :borderless="true"
+        width="w-31"
+        textColor="text-[#141522]"
+      />
     </div>
 
     <div class="h-40">
@@ -13,8 +22,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
-import { Line } from "vue-chartjs"
+import { ref, computed } from "vue";
+import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,9 +35,9 @@ import {
   Legend,
   type ChartData,
   type ChartOptions,
-  type TooltipItem
-} from "chart.js"
-import Select from "@/ui/Select.vue"
+  type TooltipItem,
+} from "chart.js";
+import Select from "@/ui/Select.vue";
 
 ChartJS.register(
   CategoryScale,
@@ -37,16 +46,16 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
-)
+  Legend,
+);
 
-const selectedPeriod = ref("thisWeek")
+const selectedPeriod = ref("thisWeek");
 
 const periodOptions = [
   { label: "This Week", value: "thisWeek" },
   { label: "This Month", value: "thisMonth" },
-  { label: "This Year", value: "thisYear" }
-]
+  { label: "This Year", value: "thisYear" },
+];
 
 const activityData = ref([
   { day: "S", tasks: 1 },
@@ -55,15 +64,15 @@ const activityData = ref([
   { day: "W", tasks: 4 },
   { day: "T", tasks: 0 },
   { day: "F", tasks: 7 },
-  { day: "S", tasks: 1 }
-])
+  { day: "S", tasks: 1 },
+]);
 
 const chartData = computed<ChartData<"line">>(() => ({
-  labels: activityData.value.map(d => d.day),
+  labels: activityData.value.map((d) => d.day),
   datasets: [
     {
       label: "Tasks",
-      data: activityData.value.map(d => d.tasks),
+      data: activityData.value.map((d) => d.tasks),
       borderColor: "#1a1a2e",
       borderWidth: 3,
       tension: 0.45,
@@ -74,21 +83,21 @@ const chartData = computed<ChartData<"line">>(() => ({
       pointHitRadius: 12,
       pointBackgroundColor: "#ffffff",
       pointBorderColor: "#4f46e5",
-      pointBorderWidth: 4
-    }
-  ]
-}))
+      pointBorderWidth: 4,
+    },
+  ],
+}));
 
 const chartOptions = computed<ChartOptions<"line">>(() => ({
   responsive: true,
   maintainAspectRatio: false,
   interaction: {
     mode: "index",
-    intersect: false
+    intersect: false,
   },
   plugins: {
     legend: {
-      display: false
+      display: false,
     },
     tooltip: {
       backgroundColor: "#1a1a2e",
@@ -99,20 +108,20 @@ const chartOptions = computed<ChartOptions<"line">>(() => ({
 
       titleFont: {
         size: 12,
-        weight: "bold"
+        weight: "bold",
       },
       bodyFont: {
-        size: 11
+        size: 11,
       },
       callbacks: {
         label: (ctx: TooltipItem<"line">) => {
-          const value = ctx.parsed.y
-          if (value === null) return ''
-          const rounded = Math.round(value)
-          return `${rounded} Task${rounded !== 1 ? "s" : ""}`
-        }
-      }
-    }
+          const value = ctx.parsed.y;
+          if (value === null) return "";
+          const rounded = Math.round(value);
+          return `${rounded} Task${rounded !== 1 ? "s" : ""}`;
+        },
+      },
+    },
   },
   scales: {
     y: {
@@ -123,9 +132,9 @@ const chartOptions = computed<ChartOptions<"line">>(() => ({
         color: "#666",
         font: {
           size: 12,
-          weight: 500
-        }
-      }
+          weight: 500,
+        },
+      },
     },
     x: {
       beginAtZero: true,
@@ -134,13 +143,13 @@ const chartOptions = computed<ChartOptions<"line">>(() => ({
         stepSize: 1,
         color: "#666",
         font: {
-          size: 12
-        }
+          size: 12,
+        },
       },
       grid: {
-        color: "#e5e7eb"
-      }
-    }
-  }
-}))
+        color: "#e5e7eb",
+      },
+    },
+  },
+}));
 </script>

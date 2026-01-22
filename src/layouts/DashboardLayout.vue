@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { provide } from 'vue'
-import Sidebar from '@/components/common/Sidebar.vue'
-import Header from '@/components/common/Header.vue'
-import CalendarWidget from '@/components/pages/overview/CalendarWidget.vue'
-import TaskToday from '@/components/pages/overview/TaskToday.vue'
-import { useSidebar } from '@/composables/useSidebar'
+import { provide } from "vue";
+import Sidebar from "@/components/common/Sidebar.vue";
+import Header from "@/components/common/Header.vue";
+import CalendarWidget from "@/components/pages/overview/CalendarWidget.vue";
+import TaskToday from "@/components/pages/overview/TaskToday.vue";
+import { useSidebar } from "@/composables/useSidebar";
 
-const { isSidebarOpen, closeSidebar } = useSidebar()
+const { isSidebarOpen, closeSidebar } = useSidebar();
 
-// Provide sidebar state to child components
-provide('sidebar', { isSidebarOpen, closeSidebar })
+provide("sidebar", { isSidebarOpen, closeSidebar });
 </script>
 
 <template>
   <div class="dashboard-layout min-h-screen bg-gray-50">
-    <!-- Overlay for mobile sidebar -->
-    <div v-if="isSidebarOpen" class="dashboard-layout__overlay" @click="closeSidebar"></div>
+    <div
+      v-if="isSidebarOpen"
+      class="dashboard-layout__overlay"
+      @click="closeSidebar"
+    ></div>
 
     <Sidebar />
 
@@ -90,7 +92,7 @@ provide('sidebar', { isSidebarOpen, closeSidebar })
   display: none;
   width: 360px;
   flex-shrink: 0;
-  background: #F5F5F7;
+  background: #f5f5f7;
   padding: 0;
   border-radius: 10px;
   height: fit-content;
@@ -115,7 +117,7 @@ provide('sidebar', { isSidebarOpen, closeSidebar })
 
 .dashboard-layout__sidebar-right {
   width: 410px;
-  background: #F5F5F7;
+  background: #f5f5f7;
   overflow-y: auto;
   height: 100vh;
   padding: 32px;
