@@ -23,6 +23,10 @@
       </div>
     </div>
 
+    <p class="text-[#54577A] text-sm leading-[200%] font-medium wrap-break-word line-clamp-2">
+      {{ description }}
+    </p>
+
     <div class="flex items-center flex-wrap sm:gap-x-8 gap-x-4 gap-y-2 text-xs">
       <div class="flex items-center gap-2">
         <DoubledTasksIcon :size="24" class="text-[#54577A]" />
@@ -43,7 +47,7 @@
 
 <script setup lang="ts">
 import { Star } from 'lucide-vue-next'
-import DoubledTasksIcon from '@/components/common/icons/DoubledTasksIcon.vue'
+import DoubledTasksIcon from '../../common/icons/DoubledTasksIcon.vue'
 
 interface Props {
   name: string
@@ -53,7 +57,19 @@ interface Props {
   reviews: string
   image: string
   followed: boolean
+  description: string
 }
 
 defineProps<Props>()
 </script>
+
+<style scoped>
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>

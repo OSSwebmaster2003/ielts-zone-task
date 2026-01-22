@@ -45,7 +45,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Mentors',
-        component: () => import('../pages/task/TaskPage.vue') // Placeholder
+        component: () => import('../pages/mentors/MentorsPage.vue')
       }
     ]
   },
