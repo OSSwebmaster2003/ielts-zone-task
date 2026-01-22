@@ -53,7 +53,9 @@ const handleNavClick = () => {
     </button>
 
     <div class="flex flex-col">
-      <img src="@/assets/logo.svg" alt="Logo" class="w-auto h-10" />
+      <router-link to="/overview" @click="handleNavClick" class="cursor-pointer">
+        <img src="@/assets/logo.svg" alt="Logo" class="w-auto h-10" />
+      </router-link>
       <nav class="space-y-4 mt-15">
         <router-link v-for="item in navItems" :key="item.label" :to="item.path" @click="handleNavClick" :class="[
           'w-full flex items-center gap-3 px-5 py-2.5 rounded-[10px] transition-all text-left text-sm cursor-pointer',
