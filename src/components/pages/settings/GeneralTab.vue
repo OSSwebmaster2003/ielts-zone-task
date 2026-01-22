@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import { useMessage } from "naive-ui";
 import Select from "@/ui/Select.vue";
 import type { SelectOption } from "@/ui/Select.vue";
 
@@ -10,6 +11,7 @@ interface GeneralSettings {
 }
 
 const STORAGE_KEY = "generalSettings";
+const message = useMessage();
 
 const defaultSettings: GeneralSettings = {
   language: "english",
@@ -78,9 +80,11 @@ const handleSaveChanges = () => {
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+    message.success("Successfully saved");
     console.log("General settings saved successfully:", settings);
   } catch (e) {
     console.error("Error saving general settings to localStorage:", e);
+    message.error("Failed to save settings");
   }
 };
 
@@ -96,68 +100,40 @@ onMounted(() => {
   <div class="flex flex-col gap-8 px-5 pb-8 w-full max-w-100">
     <div class="flex flex-col gap-3">
       <h3 class="text-lg font-semibold text-[#141522]">Language</h3>
-      <Select
-        v-model="language"
-        :options="languageOptions"
-        placeholder="Select language"
-        variant="filled"
-        width="w-full"
-        height="h-[50px]"
-        @change="handleLanguageChange"
-      />
+      <Select v-model="language" :options="languageOptions" placeholder="Select language" variant="filled"
+        width="w-full" height="h-[50px]" @change="handleLanguageChange" />
     </div>
 
     <div class="flex flex-col gap-3">
       <h3 class="text-lg font-semibold text-[#141522]">Timezone</h3>
-      <Select
-        v-model="timezone"
-        :options="timezoneOptions"
-        placeholder="Select timezone"
-        variant="filled"
-        width="w-full"
-        height="h-[50px]"
-        @change="handleTimezoneChange"
-      />
+      <Select v-model="timezone" :options="timezoneOptions" placeholder="Select timezone" variant="filled"
+        width="w-full" height="h-[50px]" @change="handleTimezoneChange" />
     </div>
 
     <div class="flex flex-col gap-3">
       <h3 class="text-lg font-semibold text-[#141522]">Timezone</h3>
       <div class="flex items-center justify-start gap-3">
-        <label
-          v-for="format in timeFormatOptions"
-          :key="format.value"
-          style="width: calc(50% - 6px)"
-          :class="[
-            'gap-3 py-3.25 px-3 border-2 rounded-lg cursor-pointer transition-all flex items-center justify-between',
-            timeFormat === format.value
-              ? 'border-[#546fff] bg-blue-50'
-              : 'border-[#F5F5F7] hover:border-gray-300',
-          ]"
-        >
-          <span
-            :class="[
-              'text-xs leading-[100%] font-medium',
-              timeFormat === format.value ? 'text-[#141522]' : 'text-gray-600',
-            ]"
-          >
+        <label v-for="format in timeFormatOptions" :key="format.value" style="width: calc(50% - 6px)" :class="[
+          'gap-3 py-3.25 px-3 border-2 rounded-lg cursor-pointer transition-all flex items-center justify-between',
+          timeFormat === format.value
+            ? 'border-[#546fff] bg-blue-50'
+            : 'border-[#F5F5F7] hover:border-gray-300',
+        ]">
+          <span :class="[
+            'text-xs leading-[100%] font-medium',
+            timeFormat === format.value ? 'text-[#141522]' : 'text-gray-600',
+          ]">
             {{ format.label }}
           </span>
-          <input
-            type="radio"
-            :value="format.value"
-            v-model="timeFormat"
-            class="w-5 h-5 text-[#546fff] cursor-pointer"
-            @change="handleTimeFormatChange"
-          />
+          <input type="radio" :value="format.value" v-model="timeFormat" class="w-5 h-5 text-[#546fff] cursor-pointer"
+            @change="handleTimeFormatChange" />
         </label>
       </div>
     </div>
 
     <div class="pt-4">
-      <button
-        @click="handleSaveChanges"
-        class="px-6 py-3 bg-[#546fff] text-white font-medium rounded-lg hover:bg-[#4560e6] transition-colors sm:w-auto w-full cursor-pointer"
-      >
+      <button @click="handleSaveChanges"
+        class="px-6 py-3 bg-[#546fff] text-white font-medium rounded-lg hover:bg-[#4560e6] transition-colors sm:w-auto w-full cursor-pointer">
         Save Changes
       </button>
     </div>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { NMessageProvider } from "naive-ui";
 </script>
 
 <template>
-  <router-view />
+  <NMessageProvider placement="top-right">
+    <router-view />
+  </NMessageProvider>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
