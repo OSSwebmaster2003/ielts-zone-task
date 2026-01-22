@@ -67,7 +67,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'Settings',
-        component: () => import('../pages/task/TaskPage.vue') // Placeholder
+        component: () => import('../pages/settings/SettingsPage.vue') 
       }
     ]
   }

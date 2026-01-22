@@ -1,148 +1,97 @@
 <template>
-  <div
-    ref="selectWrapper"
-    :class="[
-      width,
-      'relative inline-block',
-      disabled ? 'opacity-50 cursor-not-allowed' : '',
-    ]"
-  >
+  <div ref="selectWrapper" :class="[
+    width,
+    'relative inline-block',
+    disabled ? 'opacity-50 cursor-not-allowed' : '',
+  ]">
     <!-- Conditional rendering: input for searchable, button otherwise -->
-    <div
-      v-if="searchable"
-      :class="[
-        'flex items-center justify-between w-full cursor-pointer',
-        'px-4 py-2',
-        size,
-        'transition-all duration-200 ease-in-out',
-        'rounded-sm',
-        background,
-        variantBorderColor,
-        borderless ? 'borderless-select' : '',
-        'relative',
-      ]"
-    >
-      <input
-        ref="searchInputRef"
-        v-model="searchQuery"
-        type="text"
-        :placeholder="selectedOptionLabel || placeholder"
-        :disabled="disabled"
-        :class="[
+    <div v-if="searchable" :class="[
+      'flex items-center justify-between w-full cursor-pointer',
+      'px-4',
+      height || 'py-2',
+      height,
+      size,
+      'transition-all duration-200 ease-in-out',
+      'rounded-[10px]',
+      background,
+      variantBorderColor,
+      borderless ? 'borderless-select' : '',
+      'relative',
+    ]">
+      <input ref="searchInputRef" v-model="searchQuery" type="text" :placeholder="selectedOptionLabel || placeholder"
+        :disabled="disabled" :class="[
           'w-[calc(100%-20px)] outline-none border-none font-medium',
           computedTextColor,
           disabled ? 'cursor-not-allowed' : 'cursor-text ',
           computedSearchTextColor,
-        ]"
-        @focus="handleInputFocus"
-        @click.stop
-      />
+        ]" @focus="handleInputFocus" @click.stop />
 
-      <div
-        v-if="clearable && modelValue"
-        type="button"
-        @click.stop="clearValue"
-        class="absolute right-4 top-1/2 -translate-y-1/2 shrink-0 text-gray-400 hover:text-gray-600 cursor-pointer"
-      >
+      <div v-if="clearable && modelValue" type="button" @click.stop="clearValue"
+        class="absolute right-4 top-1/2 -translate-y-1/2 shrink-0 text-gray-400 hover:text-gray-600 cursor-pointer">
         <X class="w-4 h-4" />
       </div>
 
-      <component
-        v-else
-        :is="arrowIconComponent || ChevronDownIcon"
-        :stroke-width="1"
-        :class="[
-          'ml-2 shrink-0',
-          'h-4 w-4',
-          computedTextColor,
-          'transition-transform duration-200 ease-in-out font-medium',
-          isOpen ? 'rotate-180' : '',
-          'w-5 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer',
-        ]"
-        @click="toggleDropdown"
-      />
+      <component v-else :is="arrowIconComponent || ChevronDownIcon" :stroke-width="1" :class="[
+        'ml-2 shrink-0',
+        'h-4 w-4',
+        computedTextColor,
+        'transition-transform duration-200 ease-in-out font-medium',
+        isOpen ? 'rotate-180' : '',
+        'w-5 absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer',
+      ]" @click="toggleDropdown" />
     </div>
 
-    <button
-      v-else
-      type="button"
-      :class="[
-        'flex items-center justify-between w-full cursor-pointer',
-        'px-4 py-2 font-medium',
-        size,
-        'transition-all duration-200 ease-in-out',
-        background,
-        variantBorderColor,
-        computedTextColor,
-        borderless ? 'borderless-select' : '',
-      ]"
-      @click="toggleDropdown"
-      :disabled="disabled"
-    >
+    <button v-else type="button" :class="[
+      'flex items-center justify-between w-full cursor-pointer',
+      'px-4',
+      height || 'py-2',
+      height,
+      'font-medium',
+      size,
+      'transition-all duration-200 ease-in-out',
+      'rounded-[10px]',
+      background,
+      variantBorderColor,
+      computedTextColor,
+      borderless ? 'borderless-select' : '',
+    ]" @click="toggleDropdown" :disabled="disabled">
       <span :class="[computedTextColor, 'w-[calc(100%-20px)] text-left truncate, font-medium']">{{
         selectedOptionLabel || placeholder
       }}</span>
 
-      <div
-        v-if="clearable && modelValue"
-        type="button"
-        @click.stop="clearValue"
-        class="ml-2 shrink-0 text-gray-400 hover:text-gray-600"
-      >
+      <div v-if="clearable && modelValue" type="button" @click.stop="clearValue"
+        class="ml-2 shrink-0 text-gray-400 hover:text-gray-600">
         <X class="w-4 h-4" />
       </div>
 
-      <component
-        v-else
-        :is="arrowIconComponent || ChevronDownIcon"
-        :stroke-width="1"
-        :class="[
-          'ml-2 shrink-0',
-          'h-4 w-4',
-          computedTextColor,
-          'transition-transform duration-200 ease-in-out font-medium',
-          isOpen ? 'rotate-180' : '',
-          'w-5',
-        ]"
-      />
+      <component v-else :is="arrowIconComponent || ChevronDownIcon" :stroke-width="1" :class="[
+        'ml-2 shrink-0',
+        'h-4 w-4',
+        computedTextColor,
+        'transition-transform duration-200 ease-in-out font-medium',
+        isOpen ? 'rotate-180' : '',
+        'w-5',
+      ]" />
     </button>
 
-    <transition
-      enter-active-class="transition ease-out duration-100"
-      enter-from-class="transform opacity-0 scale-95"
-      enter-to-class="transform opacity-100 scale-100"
-      leave-active-class="transition ease-in duration-75"
-      leave-from-class="transform opacity-100 scale-100"
-      leave-to-class="transform opacity-0 scale-95"
-    >
-      <ul
-        v-show="isOpen"
-        class="absolute w-full mt-1 bg-white border border-gray-300 shadow-lg p-1 rounded-lg max-h-60 overflow-y-auto z-10"
-        role="listbox"
-        tabindex="-1"
-      >
-        <li
-          v-for="option in filteredOptions"
-          :key="option.value"
-          :class="[
-            'block w-full text-left cursor-pointer',
-            'px-3 py-2',
-            size,
-            'transition-colors duration-150 ease-in-out',
-            option.value === modelValue
-              ? 'bg-blue-50 text-blue-700 font-medium'
-              : 'text-gray-800 hover:bg-gray-100',
-          ]"
-          @click="selectOption(option)"
-          role="option"
-          :aria-selected="option.value === modelValue"
-        >
+    <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
+      <ul v-show="isOpen"
+        class="absolute w-full mt-1 bg-white border border-gray-300 shadow-lg p-1 rounded-[10px] max-h-60 overflow-y-auto z-10"
+        role="listbox" tabindex="-1">
+        <li v-for="option in filteredOptions" :key="option.value" :class="[
+          'block w-full text-left cursor-pointer',
+          'px-3 py-2',
+          size,
+          'transition-colors duration-150 ease-in-out',
+          option.value === modelValue
+            ? 'bg-blue-50 text-blue-700 font-medium'
+            : 'text-gray-800 hover:bg-gray-100',
+        ]" @click="selectOption(option)" role="option" :aria-selected="option.value === modelValue">
           {{ option.label }}
         </li>
-        <li
-          v-if="filteredOptions.length === 0"
-          class="px-3 py-2 text-sm text-gray-500"
-        >
+        <li v-if="filteredOptions.length === 0" class="px-3 py-2 text-sm text-gray-500">
           {{
             searchable && searchQuery
               ? "No results found"
@@ -184,6 +133,7 @@ export interface CustomSelectProps {
   borderless?: boolean
   textColor?: string
   size?: string
+  height?: string
 }
 
 const props = withDefaults(defineProps<CustomSelectProps>(), {
@@ -199,6 +149,7 @@ const props = withDefaults(defineProps<CustomSelectProps>(), {
   width: "w-full",
   textColor: undefined,
   size: "text-xs",
+  height: undefined,
 })
 
 const isOpen = ref(false)
