@@ -14,7 +14,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <div class="bg-white rounded-[10px] p-6 overflow-hidden w-full h-full">
+  <div class="bg-white w-full h-full rounded-[10px] p-6 overflow-hidden">
     <img
       :src="image"
       :alt="title"

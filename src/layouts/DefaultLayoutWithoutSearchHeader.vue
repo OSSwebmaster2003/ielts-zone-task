@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { provide } from 'vue'
-import Sidebar from '@/components/common/Sidebar.vue'
-import HeaderWithSearch from '@/components/common/HeaderWithSearch.vue'
-import { useSidebar } from '@/composables/useSidebar'
+import { provide } from "vue";
+import Sidebar from "@/components/common/Sidebar.vue";
+import HeaderWithSearch from "@/components/common/HeaderWithSearch.vue";
+import { useSidebar } from "@/composables/useSidebar";
 
-const { isSidebarOpen, closeSidebar } = useSidebar()
+const { isSidebarOpen, closeSidebar } = useSidebar();
 
-// Provide sidebar state to child components
-provide('sidebar', { isSidebarOpen, closeSidebar })
+provide("sidebar", { isSidebarOpen, closeSidebar });
 </script>
 
 <template>
   <div class="dashboard-layout min-h-screen bg-gray-50">
-    <!-- Overlay for mobile sidebar -->
-    <div v-if="isSidebarOpen" class="dashboard-layout__overlay" @click="closeSidebar"></div>
+    <div
+      v-if="isSidebarOpen"
+      class="dashboard-layout__overlay"
+      @click="closeSidebar"
+    ></div>
 
     <Sidebar />
 
@@ -90,14 +92,13 @@ provide('sidebar', { isSidebarOpen, closeSidebar })
 
 .dashboard-layout__sidebar-right {
   width: 410px;
-  background: #F5F5F7;
+  background: #f5f5f7;
   overflow-y: auto;
   height: 100vh;
   padding: 32px;
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
 }
-
 
 @media (max-width: 1024px) {
   .dashboard-layout__content-wrapper {

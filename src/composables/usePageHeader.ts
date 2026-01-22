@@ -1,19 +1,19 @@
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const pageHeader = ref<string>('')
+const pageHeader = ref<string>("");
 
 export function usePageHeader() {
   const setPageHeader = (text: string) => {
-    pageHeader.value = text
-  }
+    pageHeader.value = text;
+  };
 
   const getPageHeader = () => {
-    return pageHeader
-  }
+    return pageHeader;
+  };
 
   return {
     pageHeader,
     setPageHeader,
-    getPageHeader
-  }
+    getPageHeader,
+  };
 }
