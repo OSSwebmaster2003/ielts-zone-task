@@ -1,6 +1,9 @@
 <template>
   <PageHeader>Settings</PageHeader>
-  <Tab v-model="activeTab" :tabs="tabs" variant="underline" @tab-change="handleTabChange" />
+
+  <div class="bg-white rounded-[10px] pt-5">
+    <Tab v-model="activeTab" :tabs="tabs" variant="underline" @tab-change="handleTabChange" />
+  </div>
 </template>
 
 <script setup lang="ts">
