@@ -68,13 +68,13 @@ defineEmits<{
   'select-chat': [chatId: string]
 }>()
 
-const searchQuery = ref('')
+const searchQuery = ref<string>('')
 
 const filteredChats = computed(() => {
-  if (!searchQuery.value) {
+  const query = searchQuery.value.trim().toLowerCase()
+  if (!query) {
     return props.chats
   }
-  const query = searchQuery.value.toLowerCase()
   return props.chats.filter(
     chat => chat.name.toLowerCase().includes(query)
   )
