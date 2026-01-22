@@ -12,8 +12,8 @@
     <div class="">
       <div class="flex items-center flex-wrap gap-4.5">
         <div class="w-20 h-20 relative">
-          <canvas ref="progressCanvas" width="80" height="80"></canvas>
-          <div class="absolute inset-0 flex items-center justify-center">
+          <Doughnut :data="chartData" :options="chartOptions" />
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span class="text-sm font-semibold">{{ runningTaskData.progress }}%</span>
           </div>
         </div>
@@ -27,13 +27,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
-import { Chart, ArcElement, Tooltip } from "chart.js";
+import { ref, computed } from "vue";
+import { Doughnut } from "vue-chartjs";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  type ChartData,
+  type ChartOptions,
+} from "chart.js";
 
-Chart.register(ArcElement, Tooltip);
-
-const progressCanvas = ref<HTMLCanvasElement | null>(null);
-let progressChart: Chart | null = null;
+ChartJS.register(ArcElement, Tooltip);
 
 const runningTaskData = ref({
   current: 65,
@@ -41,75 +45,27 @@ const runningTaskData = ref({
   progress: 45,
 });
 
-const initChart = () => {
-  if (!progressCanvas.value) return;
-
-  const ctx = progressCanvas.value.getContext("2d");
-  if (!ctx) return;
-
-  const canvas = progressCanvas.value;
-  const container = canvas.parentElement;
-  if (container) {
-    const size = Math.min(container.clientWidth, container.clientHeight);
-    canvas.width = size;
-    canvas.height = size;
-  }
-
-  if (progressChart) {
-    progressChart.destroy();
-    progressChart = null;
-  }
-
-  progressChart = new Chart(ctx, {
-    type: "doughnut",
-    data: {
-      datasets: [
-        {
-          data: [
-            runningTaskData.value.progress,
-            100 - runningTaskData.value.progress,
-          ],
-          backgroundColor: ["#546fff", "rgba(84, 111, 255, 0.1)"],
-          borderWidth: 0,
-          // @ts-ignore
-          cutout: "75%",
-        },
+const chartData = computed<ChartData<"doughnut">>(() => ({
+  datasets: [
+    {
+      data: [
+        runningTaskData.value.progress,
+        100 - runningTaskData.value.progress,
       ],
+      backgroundColor: ["#546fff", "rgba(84, 111, 255, 0.1)"],
+      borderWidth: 0,
+      cutout: "75%",
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        tooltip: {
-          enabled: false,
-        },
-      },
+  ],
+}));
+
+const chartOptions = computed<ChartOptions<"doughnut">>(() => ({
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    tooltip: {
+      enabled: false,
     },
-  });
-};
-
-onMounted(async () => {
-  await nextTick();
-  setTimeout(() => {
-    initChart();
-  }, 0);
-});
-
-onBeforeUnmount(() => {
-  if (progressChart) {
-    progressChart.destroy();
-    progressChart = null;
-  }
-});
-
-watch(
-  () => runningTaskData.value.progress,
-  (newProgress) => {
-    if (progressChart) {
-      // @ts-ignore
-      progressChart.data.datasets[0].data = [newProgress, 100 - newProgress];
-      progressChart.update();
-    }
   },
-);
+}));
 </script>
