@@ -1,37 +1,18 @@
-<template>
-  <div class="">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]">
-        Mentors
-      </h2>
-    </div>
-
-    <div class="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-5">
-      <div v-for="mentor in defaultMentors" :key="mentor.id">
-        <MentorCardWithDescriptions :name="mentor.name" :role="mentor.role" :tasks="mentor.tasks"
-          :rating="mentor.rating" :reviews="mentor.reviews" :image="mentor.image" :followed="mentor.followed"
-          :description="mentor.description" />
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import MentorCardWithDescriptions from "./MentorCardWithDescriptions.vue"
+import MentorCardWithDescriptions from "./MentorCardWithDescriptions.vue";
 
 interface Mentor {
-  id: number
-  name: string
-  role: string
-  tasks: string
-  rating: string
-  reviews: string
-  image: string
-  followed: boolean
-  description: string
+  id: number;
+  name: string;
+  role: string;
+  tasks: string;
+  rating: string;
+  reviews: string;
+  image: string;
+  followed: boolean;
+  description: string;
 }
 
-// Default mentors data
 const defaultMentors: Mentor[] = [
   {
     id: 1,
@@ -42,7 +23,8 @@ const defaultMentors: Mentor[] = [
     reviews: "120",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
     followed: false,
-    description: "Experienced designer with 8+ years creating intuitive user interfaces. Specializes in mobile app design and design systems."
+    description:
+      "Experienced designer with 8+ years creating intuitive user interfaces. Specializes in mobile app design and design systems.",
   },
   {
     id: 2,
@@ -53,7 +35,8 @@ const defaultMentors: Mentor[] = [
     reviews: "95",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
     followed: true,
-    description: "Full stack expert passionate about building scalable web applications. Proficient in React, Node.js, and cloud technologies."
+    description:
+      "Full stack expert passionate about building scalable web applications. Proficient in React, Node.js, and cloud technologies.",
   },
   {
     id: 3,
@@ -64,7 +47,8 @@ const defaultMentors: Mentor[] = [
     reviews: "156",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
     followed: false,
-    description: "Product designer focused on user-centered design and creating meaningful digital experiences that solve real problems."
+    description:
+      "Product designer focused on user-centered design and creating meaningful digital experiences that solve real problems.",
   },
   {
     id: 4,
@@ -75,7 +59,8 @@ const defaultMentors: Mentor[] = [
     reviews: "88",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
     followed: false,
-    description: "Frontend specialist with expertise in modern JavaScript frameworks. Creates performant and accessible web applications."
+    description:
+      "Frontend specialist with expertise in modern JavaScript frameworks. Creates performant and accessible web applications.",
   },
   {
     id: 5,
@@ -86,7 +71,8 @@ const defaultMentors: Mentor[] = [
     reviews: "134",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica",
     followed: true,
-    description: "UX researcher dedicated to understanding user behavior and translating insights into actionable design recommendations."
+    description:
+      "UX researcher dedicated to understanding user behavior and translating insights into actionable design recommendations.",
   },
   {
     id: 6,
@@ -97,7 +83,8 @@ const defaultMentors: Mentor[] = [
     reviews: "102",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Robert",
     followed: false,
-    description: "Backend engineer specializing in API development, database design, and building robust server-side architectures."
+    description:
+      "Backend engineer specializing in API development, database design, and building robust server-side architectures.",
   },
   {
     id: 7,
@@ -108,7 +95,8 @@ const defaultMentors: Mentor[] = [
     reviews: "178",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Amanda",
     followed: true,
-    description: "Design system expert who creates cohesive design languages and component libraries for scalable product teams."
+    description:
+      "Design system expert who creates cohesive design languages and component libraries for scalable product teams.",
   },
   {
     id: 8,
@@ -119,7 +107,8 @@ const defaultMentors: Mentor[] = [
     reviews: "91",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
     followed: false,
-    description: "Mobile developer with expertise in iOS and Android development. Creates native and cross-platform mobile applications."
+    description:
+      "Mobile developer with expertise in iOS and Android development. Creates native and cross-platform mobile applications.",
   },
   {
     id: 9,
@@ -130,9 +119,41 @@ const defaultMentors: Mentor[] = [
     reviews: "145",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
     followed: false,
-    description: "Interaction designer focused on creating delightful and intuitive user experiences through thoughtful micro-interactions."
-  }
-]
+    description:
+      "Interaction designer focused on creating delightful and intuitive user experiences through thoughtful micro-interactions.",
+  },
+];
 </script>
+
+<template>
+  <div class="flex items-center justify-between">
+    <h2
+      class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]"
+    >
+      Mentors
+    </h2>
+  </div>
+
+  <div
+    class="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-5 items-stretch"
+  >
+    <div
+      v-for="mentor in defaultMentors"
+      :key="mentor.id"
+      class="w-full h-full"
+    >
+      <MentorCardWithDescriptions
+        :name="mentor.name"
+        :role="mentor.role"
+        :tasks="mentor.tasks"
+        :rating="mentor.rating"
+        :reviews="mentor.reviews"
+        :image="mentor.image"
+        :followed="mentor.followed"
+        :description="mentor.description"
+      />
+    </div>
+  </div>
+</template>
 
 <style scoped></style>

@@ -1,57 +1,20 @@
-<template>
-  <div class="">
-    <div class="flex items-center justify-between mb-6">
-      <h2 class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]">
-        Recent Mentors
-      </h2>
-      <div class="flex gap-2">
-        <button @click="prevSlide" :disabled="isAtStart" :class="[
-          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-          isAtStart
-            ? 'cursor-not-allowed'
-            : 'hover:bg-gray-100 cursor-pointer'
-        ]">
-          <ChevronLeft :size="24" :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'" />
-        </button>
-        <button @click="nextSlide" :disabled="isAtEnd" :class="[
-          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-          isAtEnd
-            ? 'cursor-not-allowed'
-            : 'hover:bg-gray-100 cursor-pointer'
-        ]">
-          <ChevronRight :size="24" :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'" />
-        </button>
-      </div>
-    </div>
-
-    <n-carousel ref="carouselRef" :show-dots="false" :show-arrow="false" :slides-per-view="slidesPerView"
-      :space-between="16" :loop="false" @update:current-index="onSlideChange" class="recent-mentors-carousel">
-      <div v-for="mentor in mentors" :key="mentor.id" class="mentor-slide">
-        <MentorCard :name="mentor.name" :role="mentor.role" :tasks="mentor.tasks" :rating="mentor.rating"
-          :reviews="mentor.reviews" :image="mentor.image" :followed="mentor.followed" />
-      </div>
-    </n-carousel>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import { NCarousel } from 'naive-ui'
-import MentorCard from "../overview/MentorCard.vue"
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { NCarousel } from "naive-ui";
+import MentorCard from "../overview/MentorCard.vue";
 
 interface Mentor {
-  id: number
-  name: string
-  role: string
-  tasks: string
-  rating: string
-  reviews: string
-  image: string
-  followed: boolean
+  id: number;
+  name: string;
+  role: string;
+  tasks: string;
+  rating: string;
+  reviews: string;
+  image: string;
+  followed: boolean;
 }
 
-// Default mentors data
 const defaultMentors: Mentor[] = [
   {
     id: 1,
@@ -61,7 +24,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.8",
     reviews: "120",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah",
-    followed: false
+    followed: false,
   },
   {
     id: 2,
@@ -71,7 +34,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.9",
     reviews: "95",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Michael",
-    followed: true
+    followed: true,
   },
   {
     id: 3,
@@ -81,7 +44,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.7",
     reviews: "156",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emily",
-    followed: false
+    followed: false,
   },
   {
     id: 4,
@@ -91,7 +54,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.9",
     reviews: "88",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
-    followed: false
+    followed: false,
   },
   {
     id: 5,
@@ -101,7 +64,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.6",
     reviews: "134",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica",
-    followed: true
+    followed: true,
   },
   {
     id: 6,
@@ -111,7 +74,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.8",
     reviews: "102",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Robert",
-    followed: false
+    followed: false,
   },
   {
     id: 7,
@@ -121,7 +84,7 @@ const defaultMentors: Mentor[] = [
     rating: "5.0",
     reviews: "178",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Amanda",
-    followed: true
+    followed: true,
   },
   {
     id: 8,
@@ -131,7 +94,7 @@ const defaultMentors: Mentor[] = [
     rating: "4.7",
     reviews: "91",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=James",
-    followed: false
+    followed: false,
   },
   {
     id: 9,
@@ -141,87 +104,161 @@ const defaultMentors: Mentor[] = [
     rating: "4.8",
     reviews: "145",
     image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
-    followed: false
-  }
-]
+    followed: false,
+  },
+];
 
-// Load mentors from localStorage or use default
 const loadMentors = (): Mentor[] => {
-  const stored = localStorage.getItem('recentMentors')
+  const stored = localStorage.getItem("recentMentors");
   if (stored) {
     try {
-      return JSON.parse(stored)
+      return JSON.parse(stored);
     } catch (e) {
-      console.error('Error parsing mentors from localStorage:', e)
+      console.error("Error parsing mentors from localStorage:", e);
     }
   }
-  return defaultMentors
-}
+  return defaultMentors;
+};
 
-// Save mentors to localStorage
 const saveMentors = (mentorsToSave: Mentor[]) => {
-  localStorage.setItem('recentMentors', JSON.stringify(mentorsToSave))
-}
+  localStorage.setItem("recentMentors", JSON.stringify(mentorsToSave));
+};
 
-const mentors = ref<Mentor[]>(loadMentors())
+const mentors = ref<Mentor[]>(loadMentors());
 
-// Save to localStorage on mount
 onMounted(() => {
-  if (!localStorage.getItem('recentMentors')) {
-    saveMentors(defaultMentors)
+  if (!localStorage.getItem("recentMentors")) {
+    saveMentors(defaultMentors);
   }
-})
+});
 
-const carouselRef = ref<InstanceType<typeof NCarousel> | null>(null)
-const currentIndex = ref(0)
-const windowWidth = ref(window.innerWidth)
+const carouselRef = ref<InstanceType<typeof NCarousel> | null>(null);
+const currentIndex = ref(0);
+const windowWidth = ref(window.innerWidth);
 
 const slidesPerView = computed(() => {
-  // Mobile: < 768px (md breakpoint) - 1 per view
-  // Tablet: 768px - 1024px (md to lg) - 2 per view
-  // Large: >= 1024px (lg breakpoint) - 3 per view
   if (windowWidth.value < 768) {
-    return 1 // Mobile
+    return 1;
   } else if (windowWidth.value < 1024) {
-    return 2 // Tablet
+    return 2;
   } else {
-    return 3 // Large screen
+    return 3;
   }
-})
+});
 
-const isAtStart = computed(() => currentIndex.value === 0)
+const isAtStart = computed(() => currentIndex.value === 0);
 
 const isAtEnd = computed(() => {
-  return currentIndex.value >= mentors.value.length - slidesPerView.value
-})
+  return currentIndex.value >= mentors.value.length - slidesPerView.value;
+});
 
 const onSlideChange = (index: number) => {
-  currentIndex.value = index
-}
+  currentIndex.value = index;
+};
 
 const prevSlide = () => {
   if (!isAtStart.value) {
-    carouselRef.value?.prev()
+    carouselRef.value?.prev();
   }
-}
+};
 
 const nextSlide = () => {
   if (!isAtEnd.value) {
-    carouselRef.value?.next()
+    carouselRef.value?.next();
   }
-}
+};
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth
-}
+  windowWidth.value = window.innerWidth;
+};
 
 onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
+  window.addEventListener("resize", handleResize);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
+  window.removeEventListener("resize", handleResize);
+});
 </script>
 
-<style scoped></style>
+<template>
+  <div class="">
+    <div class="flex items-center justify-between mb-6">
+      <h2
+        class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]"
+      >
+        Recent Mentors
+      </h2>
+      <div class="flex gap-2">
+        <button
+          @click="prevSlide"
+          :disabled="isAtStart"
+          :class="[
+            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+            isAtStart
+              ? 'cursor-not-allowed'
+              : 'hover:bg-gray-100 cursor-pointer',
+          ]"
+        >
+          <ChevronLeft
+            :size="24"
+            :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'"
+          />
+        </button>
+        <button
+          @click="nextSlide"
+          :disabled="isAtEnd"
+          :class="[
+            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+            isAtEnd ? 'cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer',
+          ]"
+        >
+          <ChevronRight
+            :size="24"
+            :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'"
+          />
+        </button>
+      </div>
+    </div>
+
+    <n-carousel
+      ref="carouselRef"
+      :show-dots="false"
+      :show-arrow="false"
+      :slides-per-view="slidesPerView"
+      :space-between="16"
+      :loop="false"
+      @update:current-index="onSlideChange"
+      class="recent-mentors-carousel"
+    >
+      <div v-for="mentor in mentors" :key="mentor.id" class="mentor-slide">
+        <MentorCard
+          :name="mentor.name"
+          :role="mentor.role"
+          :tasks="mentor.tasks"
+          :rating="mentor.rating"
+          :reviews="mentor.reviews"
+          :image="mentor.image"
+          :followed="mentor.followed"
+        />
+      </div>
+    </n-carousel>
+  </div>
+</template>
+
+<style scoped>
+:deep(.n-carousel__slides) {
+  display: flex;
+  align-items: stretch;
+}
+
+:deep(.n-carousel__slide) {
+  height: auto !important;
+  display: flex;
+  width: 100%;
+}
+
+:deep(.mentor-slide) {
+  width: 100%;
+}
+</style>
