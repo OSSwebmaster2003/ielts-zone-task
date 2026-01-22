@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { ChevronLeft, ChevronRight } from "lucide-vue-next";
 import { NCarousel } from "naive-ui";
+import { useMessage } from "naive-ui";
 import MentorCard from "../overview/MentorCard.vue";
 
 interface Mentor {
@@ -108,29 +109,50 @@ const defaultMentors: Mentor[] = [
   },
 ];
 
+const STORAGE_KEY = "recentMentors";
+const message = useMessage();
+
 const loadMentors = (): Mentor[] => {
-  const stored = localStorage.getItem("recentMentors");
-  if (stored) {
-    try {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
       return JSON.parse(stored);
-    } catch (e) {
-      console.error("Error parsing mentors from localStorage:", e);
     }
+  } catch (e) {
+    console.error("Error parsing mentors from localStorage:", e);
   }
   return defaultMentors;
 };
 
 const saveMentors = (mentorsToSave: Mentor[]) => {
-  localStorage.setItem("recentMentors", JSON.stringify(mentorsToSave));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mentorsToSave));
+  } catch (error) {
+    console.error("Error saving mentors to localStorage:", error);
+  }
 };
 
 const mentors = ref<Mentor[]>(loadMentors());
 
-onMounted(() => {
-  if (!localStorage.getItem("recentMentors")) {
-    saveMentors(defaultMentors);
+// Watch for changes and save to localStorage
+watch(
+  mentors,
+  (newMentors) => {
+    saveMentors(newMentors);
+  },
+  { deep: true }
+);
+
+const handleFollow = (mentorId: number) => {
+  const mentor = mentors.value.find((m) => m.id === mentorId);
+  if (mentor) {
+    mentor.followed = !mentor.followed;
+    if (mentor.followed) {
+      message.success(`You are following ${mentor.name}`);
+    }
+    saveMentors(mentors.value);
   }
-});
+};
 
 const carouselRef = ref<InstanceType<typeof NCarousel> | null>(null);
 const currentIndex = ref(0);
@@ -174,6 +196,9 @@ const handleResize = () => {
 
 onMounted(() => {
   window.addEventListener("resize", handleResize);
+  if (!localStorage.getItem(STORAGE_KEY)) {
+    saveMentors(defaultMentors);
+  }
 });
 
 onUnmounted(() => {
@@ -184,63 +209,33 @@ onUnmounted(() => {
 <template>
   <div class="">
     <div class="flex items-center justify-between mb-6">
-      <h2
-        class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]"
-      >
+      <h2 class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]">
         Recent Mentors
       </h2>
       <div class="flex gap-2">
-        <button
-          @click="prevSlide"
-          :disabled="isAtStart"
-          :class="[
-            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-            isAtStart
-              ? 'cursor-not-allowed'
-              : 'hover:bg-gray-100 cursor-pointer',
-          ]"
-        >
-          <ChevronLeft
-            :size="24"
-            :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'"
-          />
+        <button @click="prevSlide" :disabled="isAtStart" :class="[
+          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+          isAtStart
+            ? 'cursor-not-allowed'
+            : 'hover:bg-gray-100 cursor-pointer',
+        ]">
+          <ChevronLeft :size="24" :class="isAtStart ? 'text-gray-400' : 'text-[#141522]'" />
         </button>
-        <button
-          @click="nextSlide"
-          :disabled="isAtEnd"
-          :class="[
-            'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
-            isAtEnd ? 'cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer',
-          ]"
-        >
-          <ChevronRight
-            :size="24"
-            :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'"
-          />
+        <button @click="nextSlide" :disabled="isAtEnd" :class="[
+          'w-6 h-6 flex items-center justify-center rounded-lg transition-all',
+          isAtEnd ? 'cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer',
+        ]">
+          <ChevronRight :size="24" :class="isAtEnd ? 'text-gray-400' : 'text-[#141522]'" />
         </button>
       </div>
     </div>
 
-    <n-carousel
-      ref="carouselRef"
-      :show-dots="false"
-      :show-arrow="false"
-      :slides-per-view="slidesPerView"
-      :space-between="16"
-      :loop="false"
-      @update:current-index="onSlideChange"
-      class="recent-mentors-carousel"
-    >
+    <n-carousel ref="carouselRef" :show-dots="false" :show-arrow="false" :slides-per-view="slidesPerView"
+      :space-between="16" :loop="false" @update:current-index="onSlideChange" class="recent-mentors-carousel">
       <div v-for="mentor in mentors" :key="mentor.id" class="mentor-slide">
-        <MentorCard
-          :name="mentor.name"
-          :role="mentor.role"
-          :tasks="mentor.tasks"
-          :rating="mentor.rating"
-          :reviews="mentor.reviews"
-          :image="mentor.image"
-          :followed="mentor.followed"
-        />
+        <MentorCard :name="mentor.name" :role="mentor.role" :tasks="mentor.tasks" :rating="mentor.rating"
+          :reviews="mentor.reviews" :image="mentor.image" :followed="mentor.followed"
+          @follow="handleFollow(mentor.id)" />
       </div>
     </n-carousel>
   </div>

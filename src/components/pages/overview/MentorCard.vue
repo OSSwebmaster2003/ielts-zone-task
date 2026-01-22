@@ -21,6 +21,7 @@
       <div class="">
         <button
           v-if="!followed"
+          @click="$emit('follow')"
           class="text-[#546fff] text-sm font-medium hover:opacity-80 transition-opacity cursor-pointer leading-[150%] tracking-[-2%] whitespace-nowrap"
         >
           + Follow
@@ -73,4 +74,8 @@ interface Props {
 }
 
 defineProps<Props>();
+
+defineEmits<{
+  follow: [];
+}>();
 </script>

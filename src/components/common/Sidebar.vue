@@ -29,6 +29,9 @@ const navItems = ref<NavItem[]>([
 const { isSidebarOpen, closeSidebar } = useSidebar();
 
 const isActive = (path: string) => {
+  if (path === "/task") {
+    return route.path === path || route.path.startsWith(path + "/") || route.path.startsWith("/tasks/");
+  }
   return route.path === path || route.path.startsWith(path + "/");
 };
 

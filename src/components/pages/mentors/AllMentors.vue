@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, watch, onMounted } from "vue";
+import { useMessage } from "naive-ui";
 import MentorCardWithDescriptions from "./MentorCardWithDescriptions.vue";
 
 interface Mentor {
@@ -12,6 +14,9 @@ interface Mentor {
   followed: boolean;
   description: string;
 }
+
+const STORAGE_KEY = "allMentors";
+const message = useMessage();
 
 const defaultMentors: Mentor[] = [
   {
@@ -123,35 +128,67 @@ const defaultMentors: Mentor[] = [
       "Interaction designer focused on creating delightful and intuitive user experiences through thoughtful micro-interactions.",
   },
 ];
+
+const loadMentors = (): Mentor[] => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+  } catch (error) {
+    console.error("Error loading mentors from localStorage:", error);
+  }
+  return defaultMentors;
+};
+
+const saveMentors = (mentorsData: Mentor[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mentorsData));
+  } catch (error) {
+    console.error("Error saving mentors to localStorage:", error);
+  }
+};
+
+const mentors = ref<Mentor[]>(loadMentors());
+
+watch(
+  mentors,
+  (newMentors) => {
+    saveMentors(newMentors);
+  },
+  { deep: true }
+);
+
+const handleFollow = (mentorId: number) => {
+  const mentor = mentors.value.find((m) => m.id === mentorId);
+  if (mentor) {
+    mentor.followed = !mentor.followed;
+    if (mentor.followed) {
+      message.success(`You are following ${mentor.name}`);
+    }
+    saveMentors(mentors.value);
+  }
+};
+
+onMounted(() => {
+  if (!localStorage.getItem(STORAGE_KEY)) {
+    saveMentors(defaultMentors);
+  }
+});
 </script>
 
 <template>
   <div class="flex items-center justify-between">
-    <h2
-      class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]"
-    >
+    <h2 class="text-2xl font-semibold text-[#141522] leading-[150%] tracking-[-3%]">
       Mentors
     </h2>
   </div>
 
-  <div
-    class="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-5 items-stretch"
-  >
-    <div
-      v-for="mentor in defaultMentors"
-      :key="mentor.id"
-      class="w-full h-full"
-    >
-      <MentorCardWithDescriptions
-        :name="mentor.name"
-        :role="mentor.role"
-        :tasks="mentor.tasks"
-        :rating="mentor.rating"
-        :reviews="mentor.reviews"
-        :image="mentor.image"
-        :followed="mentor.followed"
-        :description="mentor.description"
-      />
+  <div class="grid sm:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-5 items-stretch">
+    <div v-for="mentor in mentors" :key="mentor.id" class="w-full h-full">
+      <MentorCardWithDescriptions :name="mentor.name" :role="mentor.role" :tasks="mentor.tasks" :rating="mentor.rating"
+        :reviews="mentor.reviews" :image="mentor.image" :followed="mentor.followed" :description="mentor.description"
+        @follow="handleFollow(mentor.id)" />
     </div>
   </div>
 </template>

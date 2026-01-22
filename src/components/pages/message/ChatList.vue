@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch, onBeforeUnmount } from "vue";
 import { Search } from "lucide-vue-next";
 import Input from "@/ui/Input.vue";
 import type { Chat } from "@/pages/message/MessagesPage.vue";
@@ -16,63 +16,60 @@ defineEmits<{
 }>();
 
 const searchQuery = ref<string>("");
+const debouncedSearchQuery = ref<string>("");
+
+let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+watch(searchQuery, (newValue) => {
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+  }
+
+  debounceTimer = setTimeout(() => {
+    debouncedSearchQuery.value = newValue;
+  }, 300);
+});
 
 const filteredChats = computed(() => {
-  const query = searchQuery.value.trim().toLowerCase();
+  const query = debouncedSearchQuery.value.trim().toLowerCase();
   if (!query) {
     return props.chats;
   }
   return props.chats.filter((chat) => chat.name.toLowerCase().includes(query));
 });
+
+onBeforeUnmount(() => {
+  if (debounceTimer) {
+    clearTimeout(debounceTimer);
+  }
+});
 </script>
 
 <template>
   <div
-    class="chat-list w-full md:w-100 border-r border-gray-200 bg-white flex flex-col h-full absolute md:relative inset-0 z-10 md:z-auto"
-  >
+    class="chat-list w-full md:w-100 border-r border-gray-200 bg-white flex flex-col h-full absolute md:relative inset-0 z-10 md:z-auto">
     <div class="p-4 border-b border-gray-200">
       <div class="relative">
-        <Input
-          v-model="searchQuery"
-          placeholder="Search Name"
-          :icon-component="Search"
-          icon-position="after"
-          variant="filled"
-          width="w-full"
-          height="h-[44px]"
-          borderRadius="rounded-[10px]"
-        />
+        <Input v-model="searchQuery" placeholder="Search Name" :icon-component="Search" icon-position="after"
+          variant="filled" width="w-full" height="h-[44px]" borderRadius="rounded-[10px]" />
       </div>
     </div>
 
     <div class="flex-1 overflow-y-auto">
-      <div
-        v-for="chat in filteredChats"
-        :key="chat.id"
-        :class="[
-          'p-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50',
-          selectedChatId === chat.id ? 'bg-gray-50' : '',
-        ]"
-        @click="$emit('select-chat', chat.id)"
-      >
+      <div v-for="chat in filteredChats" :key="chat.id" :class="[
+        'p-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50',
+        selectedChatId === chat.id ? 'bg-gray-50' : '',
+      ]" @click="$emit('select-chat', chat.id)">
         <div class="flex items-start gap-3">
           <div class="relative shrink-0">
-            <img
-              :src="chat.avatar"
-              :alt="chat.name"
-              class="w-12 h-12 rounded-full object-cover"
-            />
-            <span
-              v-if="chat.isOnline"
-              class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"
-            ></span>
+            <img :src="chat.avatar" :alt="chat.name" class="w-12 h-12 rounded-full object-cover" />
+            <span v-if="chat.isOnline"
+              class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
           </div>
 
           <div class="flex-1 min-w-0">
             <div class="flex items-center justify-between mb-1">
-              <h3
-                class="text-sm font-semibold text-[#141522] truncate leading-[150%] tracking-[-2%]"
-              >
+              <h3 class="text-sm font-semibold text-[#141522] truncate leading-[150%] tracking-[-2%]">
                 {{ chat.name }}
               </h3>
               <span class="text-xs text-gray-500 shrink-0 ml-2">
@@ -84,23 +81,9 @@ const filteredChats = computed(() => {
                 {{ chat.lastMessage }}
               </p>
               <div class="shrink-0 ml-2">
-                <span
-                  v-if="chat.unread"
-                  class="w-2 h-2 bg-red-500 rounded-full inline-block"
-                ></span>
-                <svg
-                  v-else
-                  class="w-4 h-4 text-blue-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 13l4 4L19 7"
-                  />
+                <span v-if="chat.unread" class="w-2 h-2 bg-red-500 rounded-full inline-block"></span>
+                <svg v-else class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
               </div>
             </div>

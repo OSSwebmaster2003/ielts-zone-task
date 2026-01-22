@@ -1,26 +1,3 @@
-<template>
-  <div class="bg-[#F5F5F7] rounded-[10px] p-5 rder-gray-200 w-full h-full">
-    <div class="flex items-center justify-between sm:mb-6 mb-4 flex-wrap">
-      <h3
-        class="text-base font-semibold leading-[150%] tracking-[-2%] text-[#141522]"
-      >
-        Activity
-      </h3>
-      <Select
-        v-model="selectedPeriod"
-        :options="periodOptions"
-        :borderless="true"
-        width="w-31"
-        textColor="text-[#141522]"
-      />
-    </div>
-
-    <div class="h-40">
-      <Line :data="chartData" :options="chartOptions" />
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { Line } from "vue-chartjs";
@@ -57,36 +34,61 @@ const periodOptions = [
   { label: "This Year", value: "thisYear" },
 ];
 
-const activityData = ref([
-  { day: "S", tasks: 1 },
-  { day: "M", tasks: 6 },
-  { day: "T", tasks: 3 },
-  { day: "W", tasks: 4 },
-  { day: "T", tasks: 0 },
-  { day: "F", tasks: 7 },
-  { day: "S", tasks: 1 },
-]);
-
-const chartData = computed<ChartData<"line">>(() => ({
-  labels: activityData.value.map((d) => d.day),
-  datasets: [
-    {
-      label: "Tasks",
-      data: activityData.value.map((d) => d.tasks),
-      borderColor: "#1a1a2e",
-      borderWidth: 3,
-      tension: 0.45,
-      fill: false,
-
-      pointRadius: 0,
-      pointHoverRadius: 8,
-      pointHitRadius: 12,
-      pointBackgroundColor: "#ffffff",
-      pointBorderColor: "#4f46e5",
-      pointBorderWidth: 4,
-    },
+const activityDataByPeriod = {
+  thisWeek: [
+    { label: "S", tasks: 1 },
+    { label: "M", tasks: 6 },
+    { label: "T", tasks: 3 },
+    { label: "W", tasks: 4 },
+    { label: "T", tasks: 0 },
+    { label: "F", tasks: 7 },
+    { label: "S", tasks: 1 },
   ],
-}));
+  thisMonth: [
+    { label: "Week 1", tasks: 12 },
+    { label: "Week 2", tasks: 18 },
+    { label: "Week 3", tasks: 15 },
+    { label: "Week 4", tasks: 22 },
+  ],
+  thisYear: [
+    { label: "Jan", tasks: 45 },
+    { label: "Feb", tasks: 52 },
+    { label: "Mar", tasks: 38 },
+    { label: "Apr", tasks: 61 },
+    { label: "May", tasks: 55 },
+    { label: "Jun", tasks: 48 },
+    { label: "Jul", tasks: 42 },
+    { label: "Aug", tasks: 58 },
+    { label: "Sep", tasks: 50 },
+    { label: "Oct", tasks: 65 },
+    { label: "Nov", tasks: 47 },
+    { label: "Dec", tasks: 53 },
+  ],
+};
+
+const chartData = computed<ChartData<"line">>(() => {
+  const data = activityDataByPeriod[selectedPeriod.value as keyof typeof activityDataByPeriod];
+  return {
+    labels: data.map((d) => d.label),
+    datasets: [
+      {
+        label: "Tasks",
+        data: data.map((d) => d.tasks),
+        borderColor: "#1a1a2e",
+        borderWidth: 3,
+        tension: 0.45,
+        fill: false,
+
+        pointRadius: 0,
+        pointHoverRadius: 8,
+        pointHitRadius: 12,
+        pointBackgroundColor: "#ffffff",
+        pointBorderColor: "#4f46e5",
+        pointBorderWidth: 4,
+      },
+    ],
+  };
+});
 
 const chartOptions = computed<ChartOptions<"line">>(() => ({
   responsive: true,
@@ -138,9 +140,7 @@ const chartOptions = computed<ChartOptions<"line">>(() => ({
     },
     x: {
       beginAtZero: true,
-      suggestedMax: 3,
       ticks: {
-        stepSize: 1,
         color: "#666",
         font: {
           size: 12,
@@ -153,3 +153,19 @@ const chartOptions = computed<ChartOptions<"line">>(() => ({
   },
 }));
 </script>
+
+<template>
+  <div class="bg-[#F5F5F7] rounded-[10px] p-5 rder-gray-200 w-full h-full">
+    <div class="flex items-center justify-between sm:mb-6 mb-4 flex-wrap">
+      <h3 class="text-base font-semibold leading-[150%] tracking-[-2%] text-[#141522]">
+        Activity
+      </h3>
+      <Select v-model="selectedPeriod" :options="periodOptions" :borderless="true" width="w-31"
+        textColor="text-[#141522]" />
+    </div>
+
+    <div class="h-40">
+      <Line :data="chartData" :options="chartOptions" />
+    </div>
+  </div>
+</template>
